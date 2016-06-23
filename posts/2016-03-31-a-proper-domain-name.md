@@ -1,10 +1,7 @@
----
-layout: post
-title: "A Proper Domain Name"
+title: A Proper Domain Name
 date: 2016-03-31 23:09:28 -0700
-comments: true
-categories: 
-    - Meta
+tags: Meta
+
 ---
 
 As of the writing of this post, this site is now on a proper domain name:

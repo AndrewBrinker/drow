@@ -1,9 +1,7 @@
----
-layout: post
-title: "The Rust Community"
+title: The Rust Community
 date: 2016-05-28 22:38:20 -0400
-comments: true
-categories: Rust
+tags: Rust
+
 ---
 
 I love the Rust community, I really do. Like I said in [my recent post about

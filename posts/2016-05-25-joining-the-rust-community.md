@@ -1,9 +1,7 @@
----
-layout: post
-title: "Joining the Rust Community"
+title: Joining the Rust Community
 date: 2016-05-25 18:38:24 -0400
-comments: true
-categories: Rust 
+tags: Rust
+
 ---
 
 If you're new to the Rust community, and unsure of what to read, how to take part,

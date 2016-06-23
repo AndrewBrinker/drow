@@ -1,9 +1,7 @@
----
-layout: post
-title: "Rust Modules and File Hierarchy"
+title: Rust Modules and File Hierarchy
 date: 2016-05-26 21:10:10 -0400
-comments: true
-categories:  Rust
+tags: Rust
+
 ---
 
 Rust's module system follows some fairly simple rules, but also seems to be a

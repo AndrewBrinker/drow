@@ -1,11 +1,7 @@
----
-layout: post
-title: "String Types in Rust"
+title: String Types in Rust
 date: 2016-03-27 20:12:27 -0400
-comments: true
-categories: 
-    - Rust
-    - Types
+tags: Rust, Types
+
 ---
 
 This seems to be a common issue, so let's talk about the different string types
@@ -192,7 +188,7 @@ are useful. As a final reference, here is a table of the different types:
 
 | Guarantees    | "Slice" variety  | "Owned" variety        |
 |:--------------|:-----------------|:-----------------------|
-| UTF-8         | [`str`][str]     | [`String`][string]     | 
+| UTF-8         | [`str`][str]     | [`String`][string]     |
 | C-compatible  | [`CStr`][cstr]   | [`CString`][cstring]   |
 | OS-compatible | [`OsStr`][osstr] | [`OsString`][osstring] |
 | System path   | [`Path`][path]   | [`PathBuf`][pathbuf]   |
