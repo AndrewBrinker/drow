@@ -25,8 +25,19 @@ main () {
     ensure cp -R "$static/." "$build"
 
     say "Building pages."
-    for file in "$pages/*"; do
-        ensure pandoc --template "$templates/main.html" -f markdown -t html -o "$build/$file/index.html" "$pages/$file"
+    for file in $pages/*; do
+        local ident=$(basename $file .md)
+        local output="$build/$ident/index.html"
+
+        if [ "$ident" = "index" ]; then
+            output="$build/index.html"
+        fi
+
+        ensure pandoc --template "$templates/main.html" \
+                      -f markdown \
+                      -t html \
+                      -o "$output" \
+                      "$file"
     done
 }
 
