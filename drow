@@ -5,10 +5,10 @@ set -u
 main () {
     local build="./.build"
     local assets="./assets"
-    local layouts="./layouts"
     local pages="./pages"
     local posts="./posts"
     local static="./static"
+    local templates="./templates"
 
     if [ -d "$build" ]; then
         say "Cleaning previous build out."
@@ -23,6 +23,11 @@ main () {
 
     say "Copying static files."
     ensure cp -R "$static/." "$build"
+
+    say "Building pages."
+    for file in "$pages/*"; do
+        ensure pandoc --template "$templates/main.html" -f markdown -t html -o "$build/$file/index.html" "$pages/$file"
+    done
 }
 
 say() {
