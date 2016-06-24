@@ -10,6 +10,11 @@ main () {
     local posts="./posts"
     local static="./static"
 
+    if [ -d "$build" ]; then
+        say "Cleaning previous build out."
+        rm -r "$build"
+    fi
+
     say "Creating build directory."
     ensure mkdir -p "$build"
 
@@ -17,7 +22,7 @@ main () {
     ensure cp -r "$assets" "$build"
 
     say "Copying static files."
-    ensure cp -r "$static" "$build"
+    ensure cp -R "$static/." "$build"
 }
 
 say() {
