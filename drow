@@ -10,6 +10,12 @@ main () {
     local static="./static"
     local templates="./templates"
 
+    need_dir "$assets"
+    need_dir "$pages"
+    need_dir "$posts"
+    need_dir "$static"
+    need_dir "$templates"
+
     if [ -d "$build" ]; then
         say "Cleaning previous build out."
         rm -r "$build"
@@ -48,6 +54,10 @@ say() {
 err() {
     say "$1" >&2
     exit 1
+}
+
+need_dir() {
+    if [ ! -d $1 ]; then err "missing directory '$1'"; fi
 }
 
 need_ok() {
