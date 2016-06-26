@@ -1,7 +1,5 @@
----
-layout: null
----
-User-agent: *
-Disallow: 
+# www.robotstxt.org/
 
-Sitemap: {{ site.url }}/sitemap.xml 
+# Allow crawling of all content
+User-agent: *
+Disallow:
