@@ -1,12 +1,13 @@
 # How Building This Site Should Work
 
-Layouts are used when generating each page. Every page defaults to the same
-layout, but may use an alternative layout if desired.
+Templates are used when generating each page. Every page defaults to the same
+template, but may use an alternative template if desired.
 
 Static files and assets are copied directly to the root of the generated site.
 
-Pages are run through the assigned layout and are then copied into the root of
-the generated site at `/<page>/index.html`.
+Pages are run through the assigned template and are then copied into the root
+of the generated site at `/<page>/index.html`. Obviously, no "blog" page is
+allowed, as one is automatically generated.
 
 Posts are put into the `/blog` directory, with the file name `yyyy-mm-dd-title`
 turned into the file `/blog/<yyyy>/<mm>/<dd>/<title>/index.html`
