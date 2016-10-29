@@ -8,10 +8,8 @@ Drow's design goals are:
 - Be easy to fork and modify for your own purposes.
 - Run as quickly as possible.
 - Include only the features that I actually use.
-- Don't require configuration.
+- The only configuration is what is minimally required.
 
-To these ends, Drow is designed as a single bash script along with a template site.
-Much of the Drow design is simply by convention, and configuration is nonexistent.
 Drow assumes you are publishing through GitHub pages, and is designed to support
 that use case only.
 
@@ -31,14 +29,15 @@ Pages are run through the assigned template and are then copied into the root
 of the generated site at `/<page>/index.html`. Obviously, no "blog" page is
 allowed, as one is automatically generated.
 
-Posts are put into the `/blog` directory, with the file name `yyyy-mm-dd-title`
-turned into the file `/blog/<yyyy>/<mm>/<dd>/<title>/index.html`
+Posts are put into the `/blog` directory, with the file name
+`yyyy-mm-dd-title.md` turned into the file
+`/blog/<yyyy>/<mm>/<dd>/<title>/index.html`
 
 The `/blog` directory also contains `/blog/archives/index.html`, which is an
 auto-generated history of all the posts on the site.
 
-Finally, it also has `/blog/tags/<tag>`, each of which contains `index.html`,
-which lists the posts tagged with the given tag, and `atom.xml`, which is an
+Finally, it also has `/blog/tags/<tag>/index.html`, each of which lists the
+posts tagged with the given tag, and `/blog/tags/<tag>/atom.xml`, which is an
 auto-generated RSS feed of posts with that tag.
 
 There's also, at the root level, `atom.xml` for the all-posts RSS feed.
