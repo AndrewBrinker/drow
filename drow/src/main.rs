@@ -1,41 +1,9 @@
 extern crate clap;
-
+mod command;
 use clap::{Arg, App, SubCommand};
 
 static VERSION: &'static str = "1.0.0";
 static AUTHOR: &'static str = "Andrew Brinker <me@andrewbrinker.com>";
-
-// Drow should:
-//
-// 1. Verify that you are currently in a drow project (`Drow.toml`), unless
-//    you're making a new Drow project, of course.
-// 2. Parse the configuration in the `Drow.toml` file and ensure that it
-//    is a valid configuration, providing useful error messages otherwise.
-// 3. Do whatever you've asked for.
-
-fn do_setup(directory: &str) {
-    unimplemented!()
-}
-
-fn do_run(port: &str) {
-    unimplemented!()
-}
-
-fn do_build() {
-    unimplemented!()
-}
-
-fn do_deploy() {
-    unimplemented!()
-}
-
-fn do_post(title: &str) {
-    unimplemented!()
-}
-
-fn do_page(title: &str) {
-    unimplemented!()
-}
 
 fn main() {
     let setup = SubCommand::with_name("setup")
@@ -98,27 +66,27 @@ fn main() {
     match matches.subcommand() {
         ("setup", Some(sub_matches)) => {
             let directory = sub_matches.value_of("DIRECTORY").unwrap_or(".");
-            do_setup(directory);
+            command::setup(directory);
         }
         ("run", Some(sub_matches)) => {
             let port = sub_matches.value_of("PORT").unwrap_or("3000");
-            do_run(port);
+            command::run(port);
         }
         ("build", Some(..)) => {
-            do_build();
+            command::build();
         }
         ("deploy", Some(..)) => {
-            do_deploy();
+            command::deploy();
         }
         ("post", Some(sub_matches)) => {
             // This is guaranteed not to be empty by clap.
             let title = sub_matches.value_of("TITLE").unwrap();
-            do_post(title);
+            command::post(title);
         }
         ("page", Some(sub_matches)) => {
             // This is guaranteed not to be empty by clap.
             let title = sub_matches.value_of("TITLE").unwrap();
-            do_page(title);
+            command::page(title);
         }
         _ => {}
     }
