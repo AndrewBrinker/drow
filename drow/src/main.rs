@@ -28,12 +28,19 @@ fn main() {
     let setup = SubCommand::with_name("setup")
         .about("create a new drow site")
         .author(AUTHOR)
-        .version(VERSION);
+        .version(VERSION)
+        .arg(Arg::with_name("DIRECTORY")
+             .help("the directory to create the new site in")
+             .index(1)
+             .required(true));
 
     let run = SubCommand::with_name("run")
         .about("serve your drow site locally")
         .author(AUTHOR)
-        .version(VERSION);
+        .version(VERSION)
+        .arg(Arg::with_name("PORT")
+             .index(1)
+             .help("the port to serve the site on"));
 
     let build = SubCommand::with_name("build")
         .about("build your drow site once")
@@ -48,12 +55,20 @@ fn main() {
     let post = SubCommand::with_name("post")
         .about("create a new post with your default editor")
         .author(AUTHOR)
-        .version(VERSION);
+        .version(VERSION)
+        .arg(Arg::with_name("TITLE")
+             .help("the title of the new post")
+             .index(1)
+             .required(true));
 
     let page = SubCommand::with_name("page")
         .about("create a new page with your default editor")
         .author(AUTHOR)
-        .version(VERSION);
+        .version(VERSION)
+        .arg(Arg::with_name("TITLE")
+             .help("the title of the new page")
+             .index(1)
+             .required(true));
 
     let matcher = App::new("drow")
         .about("An opinionated static site builder")
