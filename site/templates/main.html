@@ -4,16 +4,14 @@
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-        <title>$title$ - Suspect Semantics</title>
+        <title>{{title}} - Suspect Semantics</title>
 
+        <meta name="description" content="A blog about programming and stuff.">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <script src="https://use.typekit.net/udg5vzm.js"></script>
-        <script>try{Typekit.load({ async: true });}catch(e){}</script>
-
-        <link rel="stylesheet" href="/assets/stylesheets/normalize.css">
-        <link rel="stylesheet" href="/assets/stylesheets/main.css">
+        <link rel="stylesheet" href="/assets/normalize.css">
+        <link rel="stylesheet" href="/assets/main.css">
     </head>
     <body>
         <div class="container">
@@ -23,52 +21,12 @@
 
                 <h2 class="page-title">$title$</h2>
             </header>
+
             <div class="content">
                 <main class="main">
-                    $body$
+                    {{body}}
                 </main>
-                <aside class="sidebar">
-                    <div class="bar">
-                        <section id="about">
-                            <img src="/assets/images/andrew-brinker.png" alt="A picture of Andrew Brinker, the guy who runs this site.">
-                            <strong>Andrew Brinker</strong>
-                            <nav class="social">
-                                <ul>
-                                    <li>
-                                        <a href="http://twitter.com/andrewbrinker"
-                                            title="Andrew Brinker's Twitter account, @AndrewBrinker.">
-                                            Twitter
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="https://github.com/andrewbrinker"
-                                            title="Andrew Brinker's GitHub account, @AndrewBrinker.">
-                                            GitHub
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="http://pinboard.in/u:brinker"
-                                            title="Andrew Brinker's Pinboard account, u:brinker">
-                                            Pinboard
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-                            <p class="desc">Author and designer of Suspect Semantics. Interested in Rust, type theory, law, culture, and technology.</p>
-                        </section>
-                        <section id="best-posts">
-                        </section>
-                    </div>
-                    <div id="other-blogs">
-                        <!-- TODO: Fill out this list of blogs I like. -->
-                    </div>
-                </aside>
             </div>
         </div>
-
-        <script src="https://code.jquery.com/jquery-3.0.0}.min.js"></script>
-        <script>window.jQuery || document.write('<script src="/assets/scripts/vendor/jquery-3.0.0.min.js"><\/script>')</script>
-        <script src="/assets/scripts/plugins.js"></script>
-        <script src="/assets/scripts/main.js"></script>
     </body>
 </html>
