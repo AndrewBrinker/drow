@@ -5,3 +5,4 @@ authors = ["Andrew Brinker <me@andrewbrinker.com>"]
 
 [dependencies]
 clap = "2.16.3"
+toml = "0.2.1"
