@@ -16,7 +16,9 @@ pub fn setup(directory: &str) {
                     let contents: Vec<_> = read_dir.collect();
 
                     if contents.len() == 0 {
-                        if let Ok(..) = Repository::clone(repo_location, path) {
+                        let repo = "https://github.com/AndrewBrinker/drow-template";
+
+                        if let Ok(..) = Repository::clone(repo, path) {
                             info!(log, format!("drow site successfully setup at '{}'", directory));
                         } else {
                             error!(log, format!("failed to clone repository into '{}'", directory));
