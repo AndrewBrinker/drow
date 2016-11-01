@@ -1,12 +1,23 @@
+#[macro_use]
+extern crate slog;
+extern crate slog_scope;
+extern crate slog_term;
 extern crate clap;
 extern crate toml;
+extern crate git2;
 
 mod command;
 use clap::{Arg, App, SubCommand};
+use slog::DrainExt;
 
 fn main() {
     let version = "1.0.0";
     let author = "Andrew Brinker <me@andrewbrinker.com>";
+
+    // Setup logging.
+    let term_log = slog_term::streamer().stdout().build().fuse();
+    let log = slog::Logger::root(term_log, o!());
+    slog_scope::set_global_logger(log);
 
     let setup = SubCommand::with_name("setup")
         .about("create a new drow site")
