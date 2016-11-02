@@ -5,8 +5,10 @@ extern crate slog_term;
 extern crate clap;
 extern crate toml;
 extern crate git2;
+extern crate hyper;
 
 mod command;
+mod util;
 use clap::{Arg, App, SubCommand};
 use slog::DrainExt;
 

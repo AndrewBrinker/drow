@@ -1,7 +1,10 @@
-use std::path::Path;
-use std::fs;
+use std::path::{Path, PathBuf};
+use std::fs::{self, File};
+use std::io::{Read, Write};
 use git2::Repository;
+use hyper::client::Client;
 use slog_scope;
+use util;
 
 // There are three cases:
 //
@@ -9,7 +12,7 @@ use slog_scope;
 // - The directory exists and is empty => use it
 // - The directory doesn't exist => create it and use it
 pub fn setup(directory: &str) {
-    let repo = "https://github.com/AndrewBrinker/drow-template";
+    let url = "https://github.com/AndrewBrinker/drow-template";
     let log = slog_scope::logger();
     let directory = Path::new(directory);
     let display = directory.display();
@@ -52,11 +55,74 @@ pub fn setup(directory: &str) {
         return;
     }
 
-    // Otherwise, clone the repo.
-    if let Ok(..) = Repository::clone(repo, directory) {
-        info!(log, format!("drow site successfully setup at '{}'", display));
-    } else {
-        error!(log, format!("failed to clone repository into '{}'", display));
+    info!(log, "downloading template");
+    let client = Client::new();
+
+    // Make HTTP request for zip file.
+    let mut response = match client.get(url).send() {
+        Ok(response) => response,
+        Err(..) => {
+            error!(log, "couldn't download template");
+            return;
+        }
+    };
+
+    // Read the contents of the response.
+    let mut body = String::new();
+    match response.read_to_string(&mut body) {
+        Ok(..) => info!(log, "read downloaded content"),
+        Err(..) => {
+            error!(log, "couldn't read downloaded content");
+            return;
+        }
+    }
+
+    // Build the location for the zip file.
+    let mut zip_location = PathBuf::new();
+    zip_location.push(directory);
+    zip_location.push("template.zip");
+
+    // Attempt to create that zip file.
+    let mut zip_file = match File::create(&zip_location) {
+        Ok(zip_file) => zip_file,
+        Err(..) => {
+            error!(log, "couldn't create zip file '{}'", &zip_location.display());
+            return;
+        }
+    };
+
+    // Attempt write downloaded body to the zip file.
+    match zip_file.write_all(body.as_bytes()) {
+        Ok(..) => {},
+        Err(..) => {
+            error!(log, "couldn't write downloaded content to zip file '{}'", &zip_location.display());
+        }
+    }
+
+    // Unzip zip file.
+    match util::unzip_to_dir(zip_file, directory) {
+        Ok(..) => info!(log, format!("unzipped '{}' into '{}'", &zip_location.display(), display)),
+        Err(..) => {
+            error!(log, format!("couldn't unzip file file '{}'", &zip_location.display()));
+            return;
+        }
+    }
+
+    // Delete zip file.
+    match fs::remove_file(&zip_location) {
+        Ok(..) => info!(log, format!("deleted zip file '{}'", &zip_location.display())),
+        Err(..) => {
+            error!(log, format!("couldn't deleted zip file '{}'", &zip_location.display()));
+            return;
+        }
+    }
+
+    // Initialize Git repository.
+    match Repository::init(directory) {
+        Ok(..) => info!(log, format!("initialized git repository in '{}'", display)),
+        Err(..) => {
+            error!(log, format!("couldn't initialize git repository in '{}'", display));
+        }
     }
 }
 
