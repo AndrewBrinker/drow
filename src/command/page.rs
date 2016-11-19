@@ -1,5 +1,5 @@
 
-pub fn page(title: &str) {
+pub fn page(_title: &str) {
     unimplemented!()
 }
 

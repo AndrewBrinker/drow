@@ -1,5 +1,5 @@
 
-pub fn post(title: &str) {
+pub fn post(_title: &str) {
     unimplemented!()
 }
 

@@ -1,10 +1,7 @@
 use std::path::{Path, PathBuf};
-use std::fs::{self, File};
-use std::io::{Read, Write};
+use std::fs;
 use git2::Repository;
-use hyper::client::Client;
-use slog_scope;
-use util;
+use slog_scope::logger;
 
 // There are three cases:
 //
@@ -13,7 +10,7 @@ use util;
 // - The directory doesn't exist => create it and use it
 pub fn setup(directory: &str) {
     let url = "https://github.com/AndrewBrinker/drow-template";
-    let log = slog_scope::logger();
+    let log = logger();
     let directory = Path::new(directory);
     let display = directory.display();
 
@@ -56,63 +53,24 @@ pub fn setup(directory: &str) {
     }
 
     info!(log, "downloading template");
-    let client = Client::new();
 
-    // Make HTTP request for zip file.
-    let mut response = match client.get(url).send() {
-        Ok(response) => response,
-        Err(..) => {
-            error!(log, "couldn't download template");
+    // Clone the template repo.
+    match Repository::clone(url, directory) {
+        Ok(_) => {},
+        Err(_) => {
+            error!(log, format!("couldn't clone template repo '{}'", display));
             return;
         }
     };
 
-    // Read the contents of the response.
-    let mut body = String::new();
-    match response.read_to_string(&mut body) {
-        Ok(..) => info!(log, "read downloaded content"),
-        Err(..) => {
-            error!(log, "couldn't read downloaded content");
-            return;
-        }
-    }
-
-    // Build the location for the zip file.
-    let mut zip_location = PathBuf::new();
-    zip_location.push(directory);
-    zip_location.push("template.zip");
-
-    // Attempt to create that zip file.
-    let mut zip_file = match File::create(&zip_location) {
-        Ok(zip_file) => zip_file,
-        Err(..) => {
-            error!(log, "couldn't create zip file '{}'", &zip_location.display());
-            return;
-        }
-    };
-
-    // Attempt write downloaded body to the zip file.
-    match zip_file.write_all(body.as_bytes()) {
-        Ok(..) => {},
-        Err(..) => {
-            error!(log, "couldn't write downloaded content to zip file '{}'", &zip_location.display());
-        }
-    }
-
-    // Unzip zip file.
-    match util::unzip_to_dir(zip_file, directory) {
-        Ok(..) => info!(log, format!("unzipped '{}' into '{}'", &zip_location.display(), display)),
-        Err(..) => {
-            error!(log, format!("couldn't unzip file file '{}'", &zip_location.display()));
-            return;
-        }
-    }
-
-    // Delete zip file.
-    match fs::remove_file(&zip_location) {
-        Ok(..) => info!(log, format!("deleted zip file '{}'", &zip_location.display())),
-        Err(..) => {
-            error!(log, format!("couldn't deleted zip file '{}'", &zip_location.display()));
+    // Delete the .git folder in the cloned directory.
+    let mut git_dir = PathBuf::new();
+    git_dir.push(directory);
+    git_dir.push(".git");
+    match fs::remove_dir_all(&git_dir) {
+        Ok(_) => {},
+        Err(_) => {
+            error!(log, format!("unable to delete .git directory from cloned template"));
             return;
         }
     }
