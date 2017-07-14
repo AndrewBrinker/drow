@@ -1,7 +1,6 @@
+use git2::Repository;
 use std::path::{Path, PathBuf};
 use std::fs;
-use git2::Repository;
-use slog_scope::logger;
 
 // There are three cases:
 //
@@ -10,22 +9,21 @@ use slog_scope::logger;
 // - The directory doesn't exist => create it and use it
 pub fn setup(directory: &str) {
     let url = "https://github.com/AndrewBrinker/drow-template";
-    let log = logger();
     let directory = Path::new(directory);
     let display = directory.display();
 
     // Sweet, sweet logging.
-    info!(log, "Setting up drow site");
+    info!("Setting up drow site");
 
     // Make sure the directory exists and create it if it doesn't.
     if !directory.exists() {
-        warn!(log, format!("'{}' doesn't exist", display));
-        info!(log, format!("creating directory '{}'", display));
+        warn!("'{}' doesn't exist", display);
+        info!("creating directory '{}'", display);
 
         match fs::create_dir(directory) {
-            Ok(..) => info!(log, format!("created directory '{}'", display)),
+            Ok(..) => info!("created directory '{}'", display),
             Err(..) => {
-                error!(log, format!("couldn't create directory '{}'", display));
+                error!("couldn't create directory '{}'", display);
                 return;
             }
         }
@@ -33,7 +31,7 @@ pub fn setup(directory: &str) {
 
     // Make sure we're looking at a directory.
     if !directory.is_dir() {
-        error!(log, format!("'{}' isn't a directory", display));
+        error!("'{}' isn't a directory", display);
         return;
     }
 
@@ -41,24 +39,24 @@ pub fn setup(directory: &str) {
     let contents: Vec<_> = match directory.read_dir() {
         Ok(directory_iter) => directory_iter.filter(|r| r.is_ok()).collect(),
         Err(..) => {
-            error!(log, format!("couldn't read directory '{}'", display));
+            error!("couldn't read directory '{}'", display);
             return;
         }
     };
 
     // If that vector isn't empty, you've got problems!
     if !contents.is_empty() {
-        error!(log, format!("directory '{}' isn't empty", display));
+        error!("directory '{}' isn't empty", display);
         return;
     }
 
-    info!(log, "downloading template");
+    info!("downloading template");
 
     // Clone the template repo.
     match Repository::clone(url, directory) {
-        Ok(_) => {},
+        Ok(_) => {}
         Err(_) => {
-            error!(log, format!("couldn't clone template repo '{}'", display));
+            error!("couldn't clone template repo '{}'", display);
             return;
         }
     };
@@ -68,19 +66,18 @@ pub fn setup(directory: &str) {
     git_dir.push(directory);
     git_dir.push(".git");
     match fs::remove_dir_all(&git_dir) {
-        Ok(_) => {},
+        Ok(_) => {}
         Err(_) => {
-            error!(log, format!("unable to delete .git directory from cloned template"));
+            error!("unable to delete .git directory from cloned template");
             return;
         }
     }
 
     // Initialize Git repository.
     match Repository::init(directory) {
-        Ok(..) => info!(log, format!("initialized git repository in '{}'", display)),
+        Ok(..) => info!("initialized git repository in '{}'", display),
         Err(..) => {
-            error!(log, format!("couldn't initialize git repository in '{}'", display));
+            error!("couldn't initialize git repository in '{}'", display);
         }
     }
 }
-
