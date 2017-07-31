@@ -42,3 +42,16 @@ auto-generated RSS feed of posts with that tag.
 
 There's also, at the root level, `atom.xml` for the all-posts RSS feed.
 
+## Drow Admin
+
+This is a new idea I am working on, but I'd like to be able to conveniently
+edit a Drow site's configuration, write new posts, and edit existing posts,
+without working in the command line. I love the command line, but I don't
+find it very conducive to long form writing.
+
+The idea is to add a command `drow admin` that:
+
+1. Starts up a local live-reloading server running the Drow site.
+2. Starts up a separate local server providing a web interface to edit
+   the Drow configuration, edit posts, and add posts.
+
