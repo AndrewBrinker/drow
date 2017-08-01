@@ -53,5 +53,41 @@ The idea is to add a command `drow admin` that:
 
 1. Starts up a local live-reloading server running the Drow site.
 2. Starts up a separate local server providing a web interface to edit
-   the Drow configuration, edit posts, and add posts.
+   the Drow configuration, edit posts, add posts, edit pages, and add pages.
+
+## Drow File Structure
+
+Drow is organized into one configuration file and four folders:
+
+- `Drow.toml`
+- `assets`
+- `pages`
+- `posts`
+- `templates`
+
+__`Drow.toml`__
+
+Contains all configuration data for the site, which will be made accessible
+to the template pages.
+
+__`assets`__
+
+The CSS, JS, and images for the site. The contents of this folder are copied
+directly into the root of the generated site. So `assets/css` becomes `./css`.
+
+__`pages`__
+
+Pages which will be served on the final site. The index page gets special
+treatment, and will be the homepage of the site. Every other pages `blah.html`
+becomes `blah/index.html`.
+
+__`posts`__
+
+The posts, which made Drow sites into blogs. These are processed as described
+in the above section.
+
+__`templates`__
+
+The templates from which all the HTML will be generated.
+
 
