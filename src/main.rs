@@ -8,6 +8,7 @@ extern crate git2;
 use clap::{Arg, App, SubCommand};
 
 mod command {
+    pub mod admin;
     pub mod build;
     pub mod deploy;
     pub mod page;
@@ -16,6 +17,7 @@ mod command {
     pub mod setup;
 }
 
+use command::admin::admin as do_admin;
 use command::build::build as do_build;
 use command::deploy::deploy as do_deploy;
 use command::page::page as do_page;
@@ -81,6 +83,13 @@ fn main() {
                 .required(true),
         );
 
+    let admin = SubCommand::with_name("admin")
+        .about(
+            "start up a local admin server to edit config, write posts, and edit posts",
+        )
+        .author(author)
+        .version(version);
+
     let app = App::new("drow")
         .about("An opinionated static site builder")
         .author(author)
@@ -90,7 +99,8 @@ fn main() {
         .subcommand(build)
         .subcommand(deploy)
         .subcommand(post)
-        .subcommand(page);
+        .subcommand(page)
+        .subcommand(admin);
 
     match app.get_matches().subcommand() {
         ("setup", Some(m)) => {
@@ -113,6 +123,7 @@ fn main() {
         }
         ("build", Some(..)) => do_build(),
         ("deploy", Some(..)) => do_deploy(),
+        ("admin", Some(..)) => do_admin(),
         _ => {}
     }
 }
