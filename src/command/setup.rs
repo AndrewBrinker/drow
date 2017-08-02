@@ -3,11 +3,9 @@ use std::fs;
 use git2::Repository;
 use config::Config;
 
-// There are three cases:
-//
-// - The directory exists and isn't empty => error
-// - The directory exists and is empty => use it
-// - The directory doesn't exist => create it and use it
+/// Setup a fresh Drow repository.
+///
+/// Takes in the CLI configuration and the location of the new Drow site.
 pub fn setup(config: Config, directory: &str) {
     info!("Setting up drow site");
     let url = config.get_template_repo();
