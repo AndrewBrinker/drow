@@ -52,7 +52,6 @@ impl<'a> Default for Config<'a> {
         let logger = TerminalLoggerBuilder::new()
             .level(Severity::Info)
             .destination(Destination::Stdout)
-            .format(Format::Compact)
             .build()
             .unwrap();
 
