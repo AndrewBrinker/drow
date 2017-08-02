@@ -5,13 +5,20 @@ use std::fs::{create_dir, File};
 /// Takes in a page title, creates a file called "<title>.md" in the pages
 /// directory.
 pub fn page(config: Config, title: &str) {
-    info!("Creating new page");
     let directory = config.pages_dir();
     let disp = directory.display();
     let mut new_page = PathBuf::new();
     new_page.push(directory);
     new_page.push(title);
     new_page.set_extension("md");
+
+    info!("checking that we're in a drow repo");
+    let config_file = config.config_file();
+    if !config_file.exists() {
+        error!("we are not in a drow repo");
+        error!("cannot continue. Exiting...");
+        return;
+    }
 
     if !directory.exists() {
         warn!("'{}' doesn't exist", disp);
