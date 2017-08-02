@@ -8,7 +8,7 @@ use config::Config;
 /// Takes in the CLI configuration and the location of the new Drow site.
 pub fn setup(config: Config, directory: &str) {
     info!("Setting up drow site");
-    let url = config.get_template_repo();
+    let url = config.template_repo();
     let directory = Path::new(directory);
     let disp = directory.display();
 

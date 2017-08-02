@@ -1,4 +1,6 @@
 #[macro_use]
+extern crate getset;
+#[macro_use]
 extern crate log;
 extern crate env_logger;
 extern crate clap;

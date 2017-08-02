@@ -1,17 +1,50 @@
+use std::path::Path;
 
 /// A struct containing all CLI configuration.
+#[derive(Getters)]
 pub struct Config<'a> {
+    /// The location of the initialization repository.
+    #[get = "pub"]
     template_repo: &'a str,
+
+    /// The path to the assets directory.
+    #[get = "pub"]
+    assets_dir: &'a Path,
+
+    /// The path to the pagesdirectory.
+    #[get = "pub"]
+    pages_dir: &'a Path,
+
+    /// The path to the posts directory.
+    #[get = "pub"]
+    posts_dir: &'a Path,
+
+    /// The path to the templates directory.
+    #[get = "pub"]
+    templates_dir: &'a Path,
+
+    /// The path to the configuration file.
+    #[get = "pub"]
+    config_file: &'a Path,
 }
 
 impl<'a> Config<'a> {
     /// Create a new Config struct.
     pub fn new() -> Self {
-        Config { template_repo: "https://github.com/andrewbrinker/drow-template" }
+        Config::default()
     }
+}
 
-    /// Get the location of the repo containing the Drow site template.
-    pub fn get_template_repo(&self) -> &'a str {
-        self.template_repo
+impl<'a> Default for Config<'a> {
+    fn default() -> Self {
+        Config {
+            template_repo: "https://github.com/andrewbrinker/drow-template",
+
+            assets_dir: Path::new("./assets/"),
+            pages_dir: Path::new("./pages/"),
+            posts_dir: Path::new("./posts/"),
+            templates_dir: Path::new("./templates/"),
+            config_file: Path::new("Drow.toml"),
+        }
     }
 }
