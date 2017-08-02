@@ -21,11 +21,10 @@ modify it to do what you want, and install it.
 
 __3. Include only the core features people actually use.__
 
-Some static site generators (_*cough*Jekyll*cough*_) are really packed with
-features. This can be really great, but if you're like me you know what you
-want your site to do, and don't like dealing with the complexity added by
-additional features. Drow isn't packed with features, but that helps make it
-extremely easy to use!
+Some static site generators are packed with features. This can be really
+great, but if you're like me you know what you want your site to do, and
+don't like dealing with the complexity added by additional features. Drow
+isn't packed with features, but that helps make it extremely easy to use!
 
 __4. Include only the bare minimum configuration options.__
 
