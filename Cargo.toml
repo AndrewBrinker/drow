@@ -11,8 +11,8 @@ categories = ["command-line-utilities"]
 license = "MIT"
 
 [badges]
-is-it-maintained-issue-resolution = { repository = "https://github.com/andrewbrinker/drow" }
-is-it-maintained-open-issues = { repository = "https://github.com/andrewbrinker/drow" }
+is-it-maintained-issue-resolution = { repository = "andrewbrinker/drow" }
+is-it-maintained-open-issues = { repository = "andrewbrinker/drow" }
 
 [dependencies]
 clap = "2.25.0"
