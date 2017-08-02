@@ -1,5 +1,6 @@
 use config::Config;
 
+/// Builds the site, putting the results into the build directory.
 pub fn build(config: Config) {
     info!("checking that we're in a drow repo");
     let config_file = config.config_file();
