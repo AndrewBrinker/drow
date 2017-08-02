@@ -17,7 +17,6 @@ mod config;
 mod command {
     pub mod admin;
     pub mod build;
-    pub mod deploy;
     pub mod page;
     pub mod post;
     pub mod setup;
@@ -26,7 +25,6 @@ mod command {
 use clap::{Arg, App, SubCommand};
 use command::admin::admin;
 use command::build::build;
-use command::deploy::deploy;
 use command::page::page;
 use command::post::post;
 use command::setup::setup;
@@ -51,11 +49,6 @@ fn main() {
 
     let build_cmd = SubCommand::with_name("build")
         .about("build your drow site once")
-        .author(author)
-        .version(version);
-
-    let deploy_cmd = SubCommand::with_name("deploy")
-        .about("deploy your drow project")
         .author(author)
         .version(version);
 
@@ -94,7 +87,6 @@ fn main() {
         .version(version)
         .subcommand(setup_cmd)
         .subcommand(build_cmd)
-        .subcommand(deploy_cmd)
         .subcommand(post_cmd)
         .subcommand(page_cmd)
         .subcommand(admin_cmd);
@@ -115,7 +107,6 @@ fn main() {
             page(config, title);
         }
         ("build", Some(..)) => build(config),
-        ("deploy", Some(..)) => deploy(config),
         ("admin", Some(..)) => admin(config),
         _ => {}
     }

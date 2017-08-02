@@ -43,7 +43,10 @@ impl<'a> Default for Config<'a> {
     fn default() -> Self {
         Config {
             template_repo: "https://github.com/andrewbrinker/drow-template",
-            build_dir: Path::new("./_build/"),
+            // This path gets special treatment from GitHub Pages, and can be
+            // selected as the source for a GitHub Pages site.
+            // https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/
+            build_dir: Path::new("./docs/"),
 
             assets_dir: Path::new("./assets/"),
             pages_dir: Path::new("./pages/"),
