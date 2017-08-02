@@ -7,6 +7,10 @@ pub struct Config<'a> {
     #[get = "pub"]
     template_repo: &'a str,
 
+    /// The location to put the built site.
+    #[get = "pub"]
+    build_dir: &'a Path,
+
     /// The path to the assets directory.
     #[get = "pub"]
     assets_dir: &'a Path,
@@ -39,6 +43,7 @@ impl<'a> Default for Config<'a> {
     fn default() -> Self {
         Config {
             template_repo: "https://github.com/andrewbrinker/drow-template",
+            build_dir: Path::new("./_build/"),
 
             assets_dir: Path::new("./assets/"),
             pages_dir: Path::new("./pages/"),
