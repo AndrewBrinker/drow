@@ -1,5 +1,7 @@
 # Drow
 
+__NOTE: DROW IS CURRENTLY IN AN ALPHA STATE, AND SHOULD NOT BE TRUSTED.__
+
 Drow is a work-in-progress static site generator designed for extreme ease of
 use. It has few features. It is not configurable. It has an excellent CLI and
 documentation, and a developer who cares. ❤️
