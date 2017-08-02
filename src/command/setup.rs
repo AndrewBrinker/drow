@@ -13,26 +13,24 @@ pub fn setup(config: Config, directory: &str) {
     let directory = Path::new(directory);
     let disp = directory.display();
 
-    info!(logger, "Checking if '{}' exists", disp);
     if !directory.exists() {
-        warn!(logger, "'{}' doesn't exist", disp);
-        info!(logger, "creating directory '{}'", disp);
+        info!(logger, "'{}' doesn't exist", disp);
 
         let res = create_dir(directory);
         if res.is_err() {
             error!(logger, "couldn't create directory '{}'", disp);
             return;
         }
+
+        info!(logger, "created '{}'", disp);
     }
 
-    info!(logger, "ensuring '{}' is a directory", disp);
     if !directory.is_dir() {
         error!(logger, "'{}' isn't a directory", disp);
         error!(logger, "cannot continue. Exiting...");
         return;
     }
 
-    info!(logger, "trying to read '{}' if possible", disp);
     let contents: Vec<_> = match directory.read_dir() {
         Ok(directory_iter) => directory_iter.filter(|r| r.is_ok()).collect(),
         Err(..) => {
@@ -42,14 +40,12 @@ pub fn setup(config: Config, directory: &str) {
         }
     };
 
-    info!(logger, "checking '{}' is empty", disp);
     if !contents.is_empty() {
         error!(logger, "directory '{}' isn't empty", disp);
         error!(logger, "cannot continue. Exiting...");
         return;
     }
 
-    info!(logger, "downloading template");
     let res = Repository::clone(url, directory);
     if res.is_err() {
         error!(logger, "couldn't clone template repo '{}'", disp);
@@ -57,7 +53,6 @@ pub fn setup(config: Config, directory: &str) {
         return;
     };
 
-    info!(logger, "deleting .git directory from cloned template");
     let mut git_dir = PathBuf::new();
     git_dir.push(directory);
     git_dir.push(".git");
@@ -71,11 +66,12 @@ pub fn setup(config: Config, directory: &str) {
         return;
     }
 
-    info!(logger, "initializing fresh git repository in '{}'", disp);
     let res = Repository::init(directory);
     if res.is_err() {
         error!(logger, "couldn't initialize git repository in '{}'", disp);
         error!(logger, "cannot continue. Exiting...");
         return;
     }
+
+    info!(logger, "setup new Drow site in '{}'", disp);
 }

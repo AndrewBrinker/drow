@@ -1,7 +1,7 @@
 use slog::Logger;
 use sloggers::Build;
 use sloggers::terminal::{TerminalLoggerBuilder, Destination};
-use sloggers::types::{Severity, Format};
+use sloggers::types::Severity;
 use std::path::Path;
 
 /// A struct containing all CLI configuration.
