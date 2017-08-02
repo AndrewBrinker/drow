@@ -17,6 +17,8 @@ mod command {
     pub mod setup;
 }
 
+mod config;
+
 use command::admin::admin as do_admin;
 use command::build::build as do_build;
 use command::deploy::deploy as do_deploy;
@@ -24,9 +26,11 @@ use command::page::page as do_page;
 use command::post::post as do_post;
 use command::run::run as do_run;
 use command::setup::setup as do_setup;
+use config::Config;
 
 fn main() {
     env_logger::init().unwrap();
+    let config = Config::new();
 
     let version = "1.0.0";
     let author = "Andrew Brinker <me@andrewbrinker.com>";
@@ -105,7 +109,7 @@ fn main() {
     match app.get_matches().subcommand() {
         ("setup", Some(m)) => {
             let directory = m.value_of("DIRECTORY").unwrap_or(".");
-            do_setup(directory);
+            do_setup(config, directory);
         }
         ("run", Some(m)) => {
             let port = m.value_of("PORT").unwrap_or("3000");
