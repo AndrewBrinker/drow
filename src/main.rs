@@ -8,7 +8,7 @@ extern crate clap;
 extern crate getset;
 #[macro_use]
 extern crate log;
-extern crate env_logger;
+extern crate pretty_env_logger;
 extern crate toml;
 extern crate git2;
 
@@ -32,7 +32,7 @@ use command::setup::setup;
 use config::Config;
 
 fn main() {
-    env_logger::init().unwrap();
+    pretty_env_logger::init().unwrap();
     let config = Config::new();
 
     let version = crate_version!();
