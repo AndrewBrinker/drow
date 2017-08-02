@@ -114,9 +114,9 @@ fn main() {
             let title = m.value_of("TITLE").unwrap();
             page(config, title);
         }
-        ("build", Some(..)) => build(),
-        ("deploy", Some(..)) => deploy(),
-        ("admin", Some(..)) => admin(),
+        ("build", Some(..)) => build(config),
+        ("deploy", Some(..)) => deploy(config),
+        ("admin", Some(..)) => admin(config),
         _ => {}
     }
 }
