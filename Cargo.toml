@@ -7,7 +7,6 @@ documentation = "https://github.com/andrewbrinker/drow"
 homepage = "https://github.com/andrewbrinker/drow"
 repository = "https://github.com/andrewbrinker/drow"
 readme = "README.md"
-keywords = ["static site generator"]
 categories = ["command-line-utilities"]
 license = "MIT"
 
