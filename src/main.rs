@@ -2,27 +2,16 @@
 #![deny(missing_docs)]
 #![allow(dead_code)]
 
-// Create a fully-featured CLI
-#[macro_use]
-extern crate clap;
-
-// Generate getters and setters
-#[macro_use]
-extern crate getset;
-
-// TOML configuration parsing
-extern crate toml;
-
-// Git interaction
-extern crate git2;
-
-// Time
-extern crate chrono;
-
-// Logging
 #[macro_use]
 extern crate slog;
 extern crate sloggers;
+#[macro_use]
+extern crate clap;
+#[macro_use]
+extern crate getset;
+extern crate toml;
+extern crate git2;
+extern crate chrono;
 
 mod config;
 mod command {
