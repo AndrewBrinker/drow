@@ -10,12 +10,15 @@ pub fn post(config: Config, title: &str) {
     let disp = directory.display();
 
     let utc: DateTime<Utc> = Utc::now();
-    let timestamp = utc.format("%Y-%m-%d").to_string();
+    let year = utc.format("%Y").to_string();
+    let month = utc.format("%m").to_string();
+    let day = utc.format("%d").to_string();
 
     let mut new_post = PathBuf::new();
     new_post.push(directory);
-    new_post.push(timestamp);
-    new_post.push("-");
+    new_post.push(year);
+    new_post.push(month);
+    new_post.push(day);
     new_post.push(title);
     new_post.set_extension("md");
 
