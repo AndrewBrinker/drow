@@ -10,16 +10,12 @@ pub fn post(config: Config, title: &str) {
     let disp = directory.display();
 
     let utc: DateTime<Utc> = Utc::now();
-    let year = utc.format("%Y").to_string();
-    let month = utc.format("%m").to_string();
-    let day = utc.format("%d").to_string();
+    let timestamp = utc.format("%Y-%m-%d").to_string();
+    let file_name = format!("{}-{}", timestamp, title);
 
     let mut new_post = PathBuf::new();
     new_post.push(directory);
-    new_post.push(year);
-    new_post.push(month);
-    new_post.push(day);
-    new_post.push(title);
+    new_post.push(file_name);
     new_post.set_extension("md");
 
     info!("checking that we're in a drow repo");
