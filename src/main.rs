@@ -13,7 +13,6 @@ mod command {
     pub mod deploy;
     pub mod page;
     pub mod post;
-    pub mod run;
     pub mod setup;
 }
 
@@ -24,7 +23,6 @@ use command::build::build as do_build;
 use command::deploy::deploy as do_deploy;
 use command::page::page as do_page;
 use command::post::post as do_post;
-use command::run::run as do_run;
 use command::setup::setup as do_setup;
 use config::Config;
 
@@ -43,16 +41,6 @@ fn main() {
             Arg::with_name("DIRECTORY")
                 .help("the directory to create the new site in")
                 .index(1),
-        );
-
-    let run = SubCommand::with_name("run")
-        .about("serve your drow site locally")
-        .author(author)
-        .version(version)
-        .arg(
-            Arg::with_name("PORT")
-                .index(1)
-                .help("the port to serve the site on"),
         );
 
     let build = SubCommand::with_name("build")
@@ -99,7 +87,6 @@ fn main() {
         .author(author)
         .version(version)
         .subcommand(setup)
-        .subcommand(run)
         .subcommand(build)
         .subcommand(deploy)
         .subcommand(post)
@@ -110,10 +97,6 @@ fn main() {
         ("setup", Some(m)) => {
             let directory = m.value_of("DIRECTORY").unwrap_or(".");
             do_setup(config, directory);
-        }
-        ("run", Some(m)) => {
-            let port = m.value_of("PORT").unwrap_or("3000");
-            do_run(port);
         }
         ("post", Some(m)) => {
             // This is guaranteed not to be empty by clap.
