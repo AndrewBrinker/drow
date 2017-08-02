@@ -6,6 +6,19 @@ Drow is a work-in-progress static site generator designed for extreme ease of
 use. It has few features. It is not configurable. It has an excellent CLI and
 documentation, and a developer who cares. ❤️
 
+## Table of Contents
+
+- [Design Goals](#design-goals)
+- [Structure](#structure)
+- [Commands](#commands)
+    - [`drow setup`](#drow-setup)
+    - [`drow page`](#drow-page)
+    - [`drow post`](#drow-post)
+    - [`drow build`](#drow-build)
+    - [`drow admin`](#drow-admin)
+- [Contributing](#contributing)
+- [License](#license)
+
 ## Design Goals
 
 __1. Provide a simple a mapping from source to site as possible.__
@@ -85,25 +98,25 @@ posts.
 
 ## Commands
 
-__`drow setup [<DIRECTORY>]`__
+### `drow setup [<DIRECTORY>]`
 
 This creates a new Drow site in the given directory, or in the current
 directory if no directory is given.
 
-__`drow page <TITLE>`__
+### `drow page <TITLE>`
 
 This creates a new page with the given title.
 
-__`drow post <TITLE>`__
+### `drow post <TITLE>`
 
 This creates a new post with the given title combined with the full current date.
 
-__`drow build`__
+### `drow build`
 
 Builds the site once, putting the results into the `docs/` folder for easy
 deploys with GitHub Pages.
 
-__`drow admin`__
+### `drow admin`
 
 Starts two local servers:
 
