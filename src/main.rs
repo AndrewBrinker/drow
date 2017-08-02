@@ -1,3 +1,7 @@
+//! Drow is an opinionated static site builder.
+#![deny(missing_docs)]
+#![allow(dead_code)]
+
 #[macro_use]
 extern crate clap;
 #[macro_use]
@@ -8,8 +12,7 @@ extern crate env_logger;
 extern crate toml;
 extern crate git2;
 
-use clap::{Arg, App, SubCommand};
-
+mod config;
 mod command {
     pub mod admin;
     pub mod build;
@@ -19,8 +22,7 @@ mod command {
     pub mod setup;
 }
 
-mod config;
-
+use clap::{Arg, App, SubCommand};
 use command::admin::admin as do_admin;
 use command::build::build as do_build;
 use command::deploy::deploy as do_deploy;
