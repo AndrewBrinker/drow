@@ -2,16 +2,27 @@
 #![deny(missing_docs)]
 #![allow(dead_code)]
 
+// Create a fully-featured CLI
 #[macro_use]
 extern crate clap;
+
+// Generate getters and setters
 #[macro_use]
 extern crate getset;
-#[macro_use]
-extern crate log;
-extern crate pretty_env_logger;
+
+// TOML configuration parsing
 extern crate toml;
+
+// Git interaction
 extern crate git2;
+
+// Time
 extern crate chrono;
+
+// Logging
+#[macro_use]
+extern crate slog;
+extern crate sloggers;
 
 mod config;
 mod command {
@@ -31,12 +42,9 @@ use command::setup::setup;
 use config::Config;
 
 fn main() {
-    pretty_env_logger::init().unwrap();
     let config = Config::new();
-
     let version = crate_version!();
     let author = crate_authors!(", ");
-
     let setup_cmd = SubCommand::with_name("setup")
         .about("create a new drow site")
         .author(author)
@@ -46,12 +54,10 @@ fn main() {
                 .help("the directory to create the new site in")
                 .index(1),
         );
-
     let build_cmd = SubCommand::with_name("build")
         .about("build your drow site once")
         .author(author)
         .version(version);
-
     let post_cmd = SubCommand::with_name("post")
         .about("create a new post with your default editor")
         .author(author)
@@ -62,7 +68,6 @@ fn main() {
                 .index(1)
                 .required(true),
         );
-
     let page_cmd = SubCommand::with_name("page")
         .about("create a new page with your default editor")
         .author(author)
@@ -73,14 +78,12 @@ fn main() {
                 .index(1)
                 .required(true),
         );
-
     let admin_cmd = SubCommand::with_name("admin")
         .about(
             "start up a local admin server to edit config, write posts, and edit posts",
         )
         .author(author)
         .version(version);
-
     let app = App::new("drow")
         .about(crate_description!())
         .author(author)
@@ -92,20 +95,9 @@ fn main() {
         .subcommand(admin_cmd);
 
     match app.get_matches().subcommand() {
-        ("setup", Some(m)) => {
-            let directory = m.value_of("DIRECTORY").unwrap_or(".");
-            setup(config, directory);
-        }
-        ("post", Some(m)) => {
-            // This is guaranteed not to be empty by clap.
-            let title = m.value_of("TITLE").unwrap();
-            post(config, title);
-        }
-        ("page", Some(m)) => {
-            // This is guaranteed not to be empty by clap.
-            let title = m.value_of("TITLE").unwrap();
-            page(config, title);
-        }
+        ("setup", Some(m)) => setup(config, m.value_of("DIRECTORY").unwrap_or(".")),
+        ("post", Some(m)) => post(config, m.value_of("TITLE").unwrap()),
+        ("page", Some(m)) => page(config, m.value_of("TITLE").unwrap()),
         ("build", Some(..)) => build(config),
         ("admin", Some(..)) => admin(config),
         _ => {}

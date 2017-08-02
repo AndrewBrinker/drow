@@ -5,6 +5,8 @@ use std::fs::{create_dir, File};
 /// Takes in a page title, creates a file called "<title>.md" in the pages
 /// directory.
 pub fn page(config: Config, title: &str) {
+    let logger = config.logger();
+
     let directory = config.pages_dir();
     let disp = directory.display();
     let mut new_page = PathBuf::new();
@@ -12,44 +14,48 @@ pub fn page(config: Config, title: &str) {
     new_page.push(title);
     new_page.set_extension("md");
 
-    info!("checking that we're in a drow repo");
+    info!(logger, "checking that we're in a drow repo");
     let config_file = config.config_file();
     if !config_file.exists() {
-        error!("we are not in a drow repo");
-        error!("cannot continue. Exiting...");
+        error!(logger, "we are not in a drow repo");
+        error!(logger, "cannot continue. Exiting...");
         return;
     }
 
     if !directory.exists() {
-        warn!("'{}' doesn't exist", disp);
-        info!("creating directory '{}'", disp);
+        warn!(logger, "'{}' doesn't exist", disp);
+        info!(logger, "creating directory '{}'", disp);
 
         let res = create_dir(directory);
         if res.is_err() {
-            error!("couldn't create directory '{}'", disp);
+            error!(logger, "couldn't create directory '{}'", disp);
             return;
         }
     }
 
-    info!("ensuring '{}' is a directory", disp);
+    info!(logger, "ensuring '{}' is a directory", disp);
     if !directory.is_dir() {
-        error!("'{}' isn't a directory", disp);
-        error!("cannot continue. Exiting...");
+        error!(logger, "'{}' isn't a directory", disp);
+        error!(logger, "cannot continue. Exiting...");
         return;
     }
 
-    info!("checking if '{}' already exists", new_page.display());
+    info!(
+        logger,
+        "checking if '{}' already exists",
+        new_page.display()
+    );
     if new_page.exists() {
-        error!("'{}' already exists", new_page.display());
-        error!("cannot continue. Exiting...");
+        error!(logger, "'{}' already exists", new_page.display());
+        error!(logger, "cannot continue. Exiting...");
         return;
     }
 
-    info!("creating '{}'", new_page.display());
+    info!(logger, "creating '{}'", new_page.display());
     let res = File::create(&new_page);
     if res.is_err() {
-        error!("could not create '{}'", new_page.display());
-        error!("cannot continue. Exiting...");
+        error!(logger, "could not create '{}'", new_page.display());
+        error!(logger, "cannot continue. Exiting...");
         return;
     }
 }

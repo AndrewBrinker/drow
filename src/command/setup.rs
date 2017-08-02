@@ -7,72 +7,75 @@ use config::Config;
 ///
 /// Takes in the CLI configuration and the location of the new Drow site.
 pub fn setup(config: Config, directory: &str) {
+    let logger = config.logger();
+
     let url = config.template_repo();
     let directory = Path::new(directory);
     let disp = directory.display();
 
-    info!("Checking if '{}' exists", disp);
+    info!(logger, "Checking if '{}' exists", disp);
     if !directory.exists() {
-        warn!("'{}' doesn't exist", disp);
-        info!("creating directory '{}'", disp);
+        warn!(logger, "'{}' doesn't exist", disp);
+        info!(logger, "creating directory '{}'", disp);
 
-        match create_dir(directory) {
-            Ok(..) => {}
-            Err(..) => {
-                error!("couldn't create directory '{}'", disp);
-                return;
-            }
+        let res = create_dir(directory);
+        if res.is_err() {
+            error!(logger, "couldn't create directory '{}'", disp);
+            return;
         }
     }
 
-    info!("ensuring '{}' is a directory", disp);
+    info!(logger, "ensuring '{}' is a directory", disp);
     if !directory.is_dir() {
-        error!("'{}' isn't a directory", disp);
-        error!("cannot continue. Exiting...");
+        error!(logger, "'{}' isn't a directory", disp);
+        error!(logger, "cannot continue. Exiting...");
         return;
     }
 
-    info!("trying to read '{}' if possible", disp);
+    info!(logger, "trying to read '{}' if possible", disp);
     let contents: Vec<_> = match directory.read_dir() {
         Ok(directory_iter) => directory_iter.filter(|r| r.is_ok()).collect(),
         Err(..) => {
-            error!("couldn't read directory '{}'", disp);
-            error!("cannot continue. Exiting...");
+            error!(logger, "couldn't read directory '{}'", disp);
+            error!(logger, "cannot continue. Exiting...");
             return;
         }
     };
 
-    info!("checking '{}' is empty", disp);
+    info!(logger, "checking '{}' is empty", disp);
     if !contents.is_empty() {
-        error!("directory '{}' isn't empty", disp);
-        error!("cannot continue. Exiting...");
+        error!(logger, "directory '{}' isn't empty", disp);
+        error!(logger, "cannot continue. Exiting...");
         return;
     }
 
-    info!("downloading template");
+    info!(logger, "downloading template");
     let res = Repository::clone(url, directory);
     if res.is_err() {
-        error!("couldn't clone template repo '{}'", disp);
-        error!("cannot continue. Exiting...");
+        error!(logger, "couldn't clone template repo '{}'", disp);
+        error!(logger, "cannot continue. Exiting...");
         return;
     };
 
-    info!("deleting .git directory from cloned template");
+    info!(logger, "deleting .git directory from cloned template");
     let mut git_dir = PathBuf::new();
     git_dir.push(directory);
     git_dir.push(".git");
     let res = remove_dir_all(&git_dir);
     if res.is_err() {
-        error!("unable to delete .git directory from cloned template");
-        error!("cannot continue. Exiting...");
+        error!(
+            logger,
+            "unable to delete .git directory from cloned template"
+        );
+        error!(logger, "cannot continue. Exiting...");
         return;
     }
 
-    info!("initializing fresh git repository in '{}'", disp);
+    info!(logger, "initializing fresh git repository in '{}'", disp);
     let res = Repository::init(directory);
     if res.is_err() {
-        error!("couldn't initialize git repository in '{}'", disp);
-        error!("cannot continue. Exiting...");
+        error!(logger, "couldn't initialize git repository in '{}'", disp);
+        error!(logger, "cannot continue. Exiting...");
         return;
     }
 }
