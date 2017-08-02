@@ -36,10 +36,6 @@ Posts are put into the `/blog` directory, with the file name
 The `/blog` directory also contains `/blog/archives/index.html`, which is an
 auto-generated history of all the posts on the site.
 
-Finally, it also has `/blog/tags/<tag>/index.html`, each of which lists the
-posts tagged with the given tag, and `/blog/tags/<tag>/atom.xml`, which is an
-auto-generated RSS feed of posts with that tag.
-
 There's also, at the root level, `atom.xml` for the all-posts RSS feed.
 
 ## Drow Admin
