@@ -43,7 +43,7 @@ then `git push` to deploy!
 __6. Be fun to write posts in.__
 
 I wrote Drow to manage my own blog, and I wanted something that would be
-fun to write in. That's why the `drow admin` exists. Writing posts in the
+fun to write in. That's why `drow admin` exists. Writing posts in the
 command line is annoying, and there's no reason to have to do it! Instead,
 with Drow, you can write them in a nifty local admin panel and have
 everything work exactly as you'd expect!
