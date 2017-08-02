@@ -1,89 +1,128 @@
 # Drow
 
-Drow is a work-in-progress static site generator designed just how I like it.
+Drow is a work-in-progress static site generator designed for extreme ease of
+use. It has few features. It is not configurable. It has an excellent CLI and
+documentation, and a developer who cares. ❤️
 
-Drow's design goals are:
+## Design Goals
 
-- Provide as simple a mapping from source to final site as possible.
-- Be easy to fork and modify for your own purposes.
-- Run as quickly as possible.
-- Include only the features that I actually use.
-- The only configuration is what is minimally required.
+__1. Provide a simple a mapping from source to site as possible.__
 
-Drow assumes you are publishing through GitHub pages, and is designed to support
-that use case only.
+It should be easy to predict what your final site will look like just by
+looking at the source of your repository.
 
-If there is a feature you want to add to Drow, you can suggest it, but know that
-the preference is for you to fork Drow and modify it to your needs. This is very
-much on purpose, as personally I like to have as much control over the generation
-of my sites as possible. If you do too, then Drow may be a good starting point.
+__2. Be easy to fork and modify for your own purposes.__
 
-## How Building This Site Should Work
+Drow is minimal, and that means that it may not do exactly the things you
+want it to do. In that case, it should be easy to fork the Drow repo,
+modify it to do what you want, and install it.
 
-Templates are used when generating each page. Every page defaults to the same
-template, but may use an alternative template if desired.
+__3. Include only the core features people actually use.__
 
-Static files and assets are copied directly to the root of the generated site.
+Some static site generators (_*cough*Jekyll*cough*_) are really packed with
+features. This can be really great, but if you're like me you know what you
+want your site to do, and don't like dealing with the complexity added by
+additional features. Drow isn't packed with features, but that helps make it
+extremely easy to use!
 
-Pages are run through the assigned template and are then copied into the root
-of the generated site at `/<page>/index.html`. Obviously, no "blog" page is
-allowed, as one is automatically generated.
+__4. Include only the bare minimum configuration options.__
 
-Posts are put into the `/blog` directory, with the file name
-`yyyy-mm-dd-title.md` turned into the file
-`/blog/<yyyy>/<mm>/<dd>/<title>/index.html`
+By the same token, more configurability means more chances to be confused
+or for something to go wrong. Drow is not configurable, which means it's not
+hard to predict how things will behave!
 
-The `/blog` directory also contains `/blog/archives/index.html`, which is an
-auto-generated history of all the posts on the site.
+__5. Be easy to deploy.__
 
-There's also, at the root level, `atom.xml` for the all-posts RSS feed.
+Who wants to worry about deploying? Drow is designed to work solely with
+GitHub Pages, and in fact _only_ supports the project pages set up, with
+the site deployed from the `docs/` folder. This means that Drow actually
+doesn't even have a command to handle deploys! Just `drow build` your site,
+then `git push` to deploy!
 
-## Drow Admin
+__6. Be fun to write posts in.__
 
-This is a new idea I am working on, but I'd like to be able to conveniently
-edit a Drow site's configuration, write new posts, and edit existing posts,
-without working in the command line. I love the command line, but I don't
-find it very conducive to long form writing.
+I wrote Drow to manage my own blog, and I wanted something that would be
+fun to write in. That's why the `drow admin` exists. Writing posts in the
+command line is annoying, and there's no reason to have to do it! Instead,
+with Drow, you can write them in a nifty local admin panel and have
+everything work exactly as you'd expect!
 
-The idea is to add a command `drow admin` that:
+## Structure
 
-1. Starts up a local live-reloading server running the Drow site.
-2. Starts up a separate local server providing a web interface to edit
-   the Drow configuration, edit posts, add posts, edit pages, and add pages.
+Every Drow site starts with a `drow setup`. This copies the base Drow project
+template, which looks like this:
 
-## Drow File Structure
+```
+|- Drow.toml
+|- assets/
+|- pages/
+|- posts/
+|- templates/
+```
 
-Drow is organized into one configuration file and four folders:
+`Drow.toml` is where you put any configuration you want your pages, posts, or
+templates to be able to use.
 
-- `Drow.toml`
-- `assets`
-- `pages`
-- `posts`
-- `templates`
+`assets/` just has its contents copied into the root of the site during
+building; so `assets/css/` becomes just `css/`.
 
-__`Drow.toml`__
+`pages/` is where all the standalone pages for your site go. They must be
+markdown files (`.md` extension), and they're transformed like so: `<title>.md`
+becomes `<title>/index.html` in the site.
 
-Contains all configuration data for the site, which will be made accessible
-to the template pages.
+`posts/` is where all the posts for your site go. They must be markdown files
+too, and they must be named `<yyyy>-<mm>-<dd>-<title>.md`. They get transformed
+like so: `<yyyy>-<mm>-<dd>-<title>.md` becomes
+`blog/<yyyy>/<mm>/<dd>/<title>/index.html`.
 
-__`assets`__
+`templates/` is where all the templates for your site go. Templates can load
+other templates, and every page or post _must_ list what template it uses in
+a TOML frontmatter.
 
-The CSS, JS, and images for the site. The contents of this folder are copied
-directly into the root of the generated site. So `assets/css` becomes `./css`.
+Drow additionally creates an `atom.xml` file, containing an ATOM feed of all
+posts.
 
-__`pages`__
+## Commands
 
-Pages which will be served on the final site. The index page gets special
-treatment, and will be the homepage of the site. Every other pages `blah.html`
-becomes `blah/index.html`.
+__`drow setup [<DIRECTORY>]`__
 
-__`posts`__
+This creates a new Drow site in the given directory, or in the current
+directory if no directory is given.
 
-The posts, which made Drow sites into blogs. These are processed as described
-in the above section.
+__`drow page <TITLE>`__
 
-__`templates`__
+This creates a new page with the given title.
 
-The templates from which all the HTML will be generated.
+__`drow post <TITLE>`__
 
+This creates a new post with the given title combined with the full current date.
+
+__`drow build`__
+
+Builds the site once, putting the results into the `docs/` folder for easy
+deploys with GitHub Pages.
+
+__`drow admin`__
+
+Starts two local servers:
+
+- One is a live-reloading server for your Drow site.
+- The other is an admin panel for managing your Drow site.
+
+This admin panel allows you to add, delete, or edit every file in your Drow,
+and to deploy updates to GitHub Pages. In essence, it is a web panel for your
+static site!
+
+Note that neither of these local servers has any sort of authentication on
+them, and that the admin panel allows complete editing of your Drow site.
+
+__NEVER RUN THESE SERVERS IN A PUBLICLY-ACCESSIBLE LOCATION.__
+
+## Contributing
+
+To learn how to contribute, see [`CONTRIBUTING.md`](CONTRIBUTING.md).
+
+## License
+
+Drow is MIT licensed. You can see the full license text in [LICENSE.md](LICENSE.md).
 
