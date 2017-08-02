@@ -124,5 +124,5 @@ To learn how to contribute, see [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 ## License
 
-Drow is MIT licensed. You can see the full license text in [LICENSE.md](LICENSE.md).
+Drow is MIT licensed. You can see the full license text in `[LICENSE.md](LICENSE.md)`.
 
