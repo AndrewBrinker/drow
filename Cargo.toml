@@ -2,7 +2,7 @@
 name = "drow"
 version = "0.1.0"
 authors = ["Andrew Brinker <me@andrewbrinker.com>"]
-description = "An opinionated static site generator."
+description = "An opinionated static site builder."
 
 [dependencies]
 clap = "2.25.0"

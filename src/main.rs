@@ -1,9 +1,10 @@
 #[macro_use]
+extern crate clap;
+#[macro_use]
 extern crate getset;
 #[macro_use]
 extern crate log;
 extern crate env_logger;
-extern crate clap;
 extern crate toml;
 extern crate git2;
 
@@ -32,8 +33,8 @@ fn main() {
     env_logger::init().unwrap();
     let config = Config::new();
 
-    let version = "1.0.0";
-    let author = "Andrew Brinker <me@andrewbrinker.com>";
+    let version = crate_version!();
+    let author = crate_authors!(", ");
 
     let setup = SubCommand::with_name("setup")
         .about("create a new drow site")
@@ -85,7 +86,7 @@ fn main() {
         .version(version);
 
     let app = App::new("drow")
-        .about("An opinionated static site builder")
+        .about(crate_description!())
         .author(author)
         .version(version)
         .subcommand(setup)
