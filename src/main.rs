@@ -11,6 +11,7 @@ extern crate log;
 extern crate pretty_env_logger;
 extern crate toml;
 extern crate git2;
+extern crate chrono;
 
 mod config;
 mod command {
@@ -106,7 +107,7 @@ fn main() {
         ("post", Some(m)) => {
             // This is guaranteed not to be empty by clap.
             let title = m.value_of("TITLE").unwrap();
-            post(title);
+            post(config, title);
         }
         ("page", Some(m)) => {
             // This is guaranteed not to be empty by clap.
