@@ -20,7 +20,6 @@ pub fn post(config: Config, title: &str) {
     new_post.push(file_name);
     new_post.set_extension("md");
 
-    info!(logger, "checking that we're in a drow repo");
     let config_file = config.config_file();
     if !config_file.exists() {
         error!(logger, "we are not in a drow repo");
@@ -29,39 +28,35 @@ pub fn post(config: Config, title: &str) {
     }
 
     if !directory.exists() {
-        warn!(logger, "'{}' doesn't exist", disp);
-        info!(logger, "creating directory '{}'", disp);
+        info!(logger, "'{}' doesn't exist", disp);
 
         let res = create_dir(directory);
         if res.is_err() {
             error!(logger, "couldn't create directory '{}'", disp);
             return;
         }
+
+        info!(logger, "created directory '{}'", disp);
     }
 
-    info!(logger, "ensuring '{}' is a directory", disp);
     if !directory.is_dir() {
         error!(logger, "'{}' isn't a directory", disp);
         error!(logger, "cannot continue. Exiting...");
         return;
     }
 
-    info!(
-        logger,
-        "checking if '{}' already exists",
-        new_post.display()
-    );
     if new_post.exists() {
         error!(logger, "'{}' already exists", new_post.display());
         error!(logger, "cannot continue. Exiting...");
         return;
     }
 
-    info!(logger, "creating '{}'", new_post.display());
     let res = File::create(&new_post);
     if res.is_err() {
         error!(logger, "could not create '{}'", new_post.display());
         error!(logger, "cannot continue. Exiting...");
         return;
     }
+
+    info!(logger, "created new post '{}'", new_post.display());
 }
