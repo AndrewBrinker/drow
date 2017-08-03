@@ -93,9 +93,6 @@ like so: `<yyyy>-<mm>-<dd>-<title>.md` becomes
 other templates, and every page or post _must_ list what template it uses in
 a TOML frontmatter.
 
-Drow additionally creates an `atom.xml` file, containing an ATOM feed of all
-posts.
-
 ## Commands
 
 ### `drow setup [<DIRECTORY>]`
