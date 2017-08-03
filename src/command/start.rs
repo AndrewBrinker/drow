@@ -6,7 +6,7 @@ use config::Config;
 /// Setup a fresh Drow repository.
 ///
 /// Takes in the CLI configuration and the location of the new Drow site.
-pub fn setup(config: Config, directory: &str) {
+pub fn start(config: Config, directory: &str) {
     let logger = config.logger();
 
     let url = config.template_repo();
@@ -73,5 +73,5 @@ pub fn setup(config: Config, directory: &str) {
         return;
     }
 
-    info!(logger, "setup new Drow site in '{}'", disp);
+    info!(logger, "started new Drow site in '{}'", disp);
 }
