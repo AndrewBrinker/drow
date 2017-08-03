@@ -41,10 +41,28 @@ fn main() {
         .required(true)
         .help("the title of the new page");
 
+    let help_text = r#"drow is an opinionated static site generator
+
+    learn:
+        drow howto [<thing>]    → read detailed guides to using drow
+        drow idea               → submit a question or idea to the drow devs
+
+    use:
+        drow start [<location>] → create a new site
+        drow build              → build your site
+        drow admin              → manage your site with a nifty admin panel
+        drow post <title>       → start a new post on your site
+        drow page <title>       → create a new page for your site
+
+    help:
+        drow version            → show what version you're using
+        drow help [<command>]   → show this help text"#;
+
     let app = App::new("drow")
         .about(crate_description!())
         .author(crate_authors!(", "))
         .version(crate_version!())
+        .help(help_text)
         .subcommand(
             SubCommand::with_name("start")
                 .arg(&directory_arg)
