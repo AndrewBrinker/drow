@@ -36,12 +36,71 @@ fn main() {
     let directory_arg = Arg::with_name("DIRECTORY")
         .index(1)
         .help("the directory to start the site in");
+
     let title_arg = Arg::with_name("TITLE")
         .index(1)
         .required(true)
         .help("the title of the new page");
 
-    let help_text = r#"drow is an opinionated static site generator
+    let start_cmd = SubCommand::with_name("start")
+        .arg(&directory_arg)
+        .about("Sets up a new drow site")
+        .help(r#""#);
+
+    let admin_cmd = SubCommand::with_name("admin")
+        .about("Starts a local admin site")
+        .help(r#""#);
+
+    let build_cmd = SubCommand::with_name("build")
+        .about("Builds the site once")
+        .help(r#""#);
+
+    let page_cmd = SubCommand::with_name("page")
+        .arg(&title_arg)
+        .about("Creates a new page")
+        .help(
+            r#"drow page <title>
+
+    description:
+        start a new page on your site with <title> as the name.
+
+    example:
+        drow page "welcome"
+        ⇒ pages/welcome.md         # file created
+        ⇒ docs/welcome/index.html  # file built"#,
+        );
+
+    let post_cmd = SubCommand::with_name("post")
+        .arg(&title_arg)
+        .about("Creates a new post")
+        .help(
+            r#"drow post <title>
+
+    description:
+        start a new post on your site with <title> as the name.
+        time of creation is included.
+
+    example:
+        drow post "hello"
+        ⇒ posts/2017-08-02-hello.md
+        drow build
+        ⇒ docs/blog/2017/08/02/hello/index.html"#,
+        );
+
+    let app = App::new("drow")
+        .about(crate_description!())
+        .author(crate_authors!(", "))
+        .version(crate_version!())
+        .subcommand(start_cmd)
+        .subcommand(post_cmd)
+        .subcommand(page_cmd)
+        .subcommand(build_cmd)
+        .subcommand(admin_cmd)
+        .setting(AppSettings::SubcommandRequiredElseHelp)
+        .setting(AppSettings::InferSubcommands)
+        .setting(AppSettings::VersionlessSubcommands)
+        .help(
+            r#"drow is an opinionated static site generator
 
     learn:
         drow howto [<thing>]    → read detailed guides to using drow
@@ -56,58 +115,7 @@ fn main() {
 
     help:
         drow version            → show what version you're using
-        drow help [<command>]   → show this help text"#;
-
-    let app = App::new("drow")
-        .about(crate_description!())
-        .author(crate_authors!(", "))
-        .version(crate_version!())
-        .help(help_text)
-        .setting(AppSettings::SubcommandRequiredElseHelp)
-        .setting(AppSettings::InferSubcommands)
-        .setting(AppSettings::VersionlessSubcommands)
-        .subcommand(
-            SubCommand::with_name("start")
-                .arg(&directory_arg)
-                .about("Sets up a new drow site"),
-        )
-        .subcommand(
-            SubCommand::with_name("post")
-                .arg(&title_arg)
-                .about("Creates a new post")
-                .help(
-                    r#"drow post <title>
-
-    description:
-        start a new post on your site with <title> as the name.
-        time of creation is included.
-
-    example:
-        drow post "hello"
-        ⇒ posts/2017-08-02-hello.md
-        drow build
-        ⇒ docs/blog/2017/08/02/hello/index.html"#,
-                ),
-        )
-        .subcommand(
-            SubCommand::with_name("page")
-                .arg(&title_arg)
-                .about("Creates a new page")
-                .help(
-                    r#"drow page <title>
-
-    description:
-        start a new page on your site with <title> as the name.
-
-    example:
-        drow page "welcome"
-        ⇒ pages/welcome.md         # file created
-        ⇒ docs/welcome/index.html  # file built"#,
-                ),
-        )
-        .subcommand(SubCommand::with_name("build").about("Builds the site once"))
-        .subcommand(
-            SubCommand::with_name("admin").about("Starts a local admin site"),
+        drow help [<command>]   → show this help text"#,
         );
 
     match app.get_matches().subcommand() {
