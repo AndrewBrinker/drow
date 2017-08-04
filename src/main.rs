@@ -22,7 +22,7 @@ mod command {
     pub mod start;
 }
 
-use clap::{Arg, App, SubCommand};
+use clap::{Arg, App, SubCommand, AppSettings};
 use command::admin::admin;
 use command::build::build;
 use command::page::page;
@@ -63,6 +63,9 @@ fn main() {
         .author(crate_authors!(", "))
         .version(crate_version!())
         .help(help_text)
+        .setting(AppSettings::SubcommandRequiredElseHelp)
+        .setting(AppSettings::InferSubcommands)
+        .setting(AppSettings::VersionlessSubcommands)
         .subcommand(
             SubCommand::with_name("start")
                 .arg(&directory_arg)
@@ -71,12 +74,36 @@ fn main() {
         .subcommand(
             SubCommand::with_name("post")
                 .arg(&title_arg)
-                .about("Creates a new post"),
+                .about("Creates a new post")
+                .help(
+                    r#"drow post <title>
+
+    description:
+        start a new post on your site with <title> as the name.
+        time of creation is included.
+
+    example:
+        drow post "hello"
+        ⇒ posts/2017-08-02-hello.md
+        drow build
+        ⇒ docs/blog/2017/08/02/hello/index.html"#,
+                ),
         )
         .subcommand(
             SubCommand::with_name("page")
                 .arg(&title_arg)
-                .about("Creates a new post"),
+                .about("Creates a new page")
+                .help(
+                    r#"drow page <title>
+
+    description:
+        start a new page on your site with <title> as the name.
+
+    example:
+        drow page "welcome"
+        ⇒ pages/welcome.md         # file created
+        ⇒ docs/welcome/index.html  # file built"#,
+                ),
         )
         .subcommand(SubCommand::with_name("build").about("Builds the site once"))
         .subcommand(
