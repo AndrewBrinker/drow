@@ -102,16 +102,13 @@ fn main() {
         .help(
             r#"drow is an opinionated static site generator
 
-    learn:
-        drow howto [<thing>]    → read detailed guides to using drow
-        drow idea               → submit a question or idea to the drow devs
-
     use:
         drow start [<location>] → create a new site
         drow build              → build your site
         drow admin              → manage your site with a nifty admin panel
         drow post <title>       → start a new post on your site
         drow page <title>       → create a new page for your site
+        drow deploy             → deploy your site with "git push"
 
     help:
         drow version            → show what version you're using

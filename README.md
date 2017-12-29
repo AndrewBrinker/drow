@@ -21,7 +21,7 @@ documentation, and a developer who cares. ❤️
 
 ## Design Goals
 
-__1. Provide a simple a mapping from source to site as possible.__
+__1. Provide as simple a mapping from source to site as possible.__
 
 It should be easy to predict what your final site will look like just by
 looking at the source of your repository.
@@ -114,6 +114,8 @@ Builds the site once, putting the results into the `docs/` folder for easy
 deploys with GitHub Pages.
 
 ### `drow admin`
+
+__This is a planned feature, to be implemented eventually.__
 
 Starts two local servers:
 
