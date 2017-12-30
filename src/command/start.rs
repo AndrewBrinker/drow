@@ -2,54 +2,49 @@ use std::path::{Path, PathBuf};
 use std::fs::{create_dir, remove_dir_all};
 use git2::Repository;
 use config::Config;
+use fail::{Fail, report_failure};
 
 /// Setup a fresh Drow repository.
 ///
 /// Takes in the CLI configuration and the location of the new Drow site.
 pub fn start(config: Config, directory: &str) {
     let logger = config.logger();
-
     let url = config.template_repo();
     let directory = Path::new(directory);
-    let disp = directory.display();
 
     if !directory.exists() {
-        info!(logger, "'{}' doesn't exist", disp);
+        report_failure(logger, Fail::PathDoesntExist(directory));
 
         let res = create_dir(directory);
         if res.is_err() {
-            error!(logger, "couldn't create directory '{}'", disp);
+            report_failure(logger, Fail::CantCreateDirectory(directory));
             return;
         }
 
-        info!(logger, "created '{}'", disp);
+        info!(logger, "created '{}'", directory.display());
     }
 
     if !directory.is_dir() {
-        error!(logger, "'{}' isn't a directory", disp);
-        error!(logger, "cannot continue. Exiting...");
+        report_failure(logger, Fail::PathIsntADirectory(directory));
         return;
     }
 
     let contents: Vec<_> = match directory.read_dir() {
         Ok(directory_iter) => directory_iter.filter(|r| r.is_ok()).collect(),
         Err(..) => {
-            error!(logger, "couldn't read directory '{}'", disp);
-            error!(logger, "cannot continue. Exiting...");
+            report_failure(logger, Fail::CantReadDirectory(directory));
             return;
         }
     };
 
     if !contents.is_empty() {
-        error!(logger, "directory '{}' isn't empty", disp);
-        error!(logger, "cannot continue. Exiting...");
+        report_failure(logger, Fail::DirectoryIsntEmpty(directory));
         return;
     }
 
     let res = Repository::clone(url, directory);
     if res.is_err() {
-        error!(logger, "couldn't clone template repo '{}'", disp);
-        error!(logger, "cannot continue. Exiting...");
+        report_failure(logger, Fail::CantCloneTemplateRepo(directory));
         return;
     };
 
@@ -58,20 +53,15 @@ pub fn start(config: Config, directory: &str) {
     git_dir.push(".git");
     let res = remove_dir_all(&git_dir);
     if res.is_err() {
-        error!(
-            logger,
-            "unable to delete .git directory from cloned template"
-        );
-        error!(logger, "cannot continue. Exiting...");
+        report_failure(logger, Fail::CantDeleteGitDirectory(directory));
         return;
     }
 
     let res = Repository::init(directory);
     if res.is_err() {
-        error!(logger, "couldn't initialize git repository in '{}'", disp);
-        error!(logger, "cannot continue. Exiting...");
+        report_failure(logger, Fail::CantInitializeGitRepository(directory));
         return;
     }
 
-    info!(logger, "started new Drow site in '{}'", disp);
+    info!(logger, "started new Drow site in '{}'", directory.display());
 }

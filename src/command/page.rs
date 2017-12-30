@@ -1,4 +1,5 @@
 use config::Config;
+use document::Document;
 use std::path::PathBuf;
 use std::fs::{create_dir, File};
 
@@ -7,12 +8,7 @@ use std::fs::{create_dir, File};
 pub fn page(config: Config, title: &str) {
     let logger = config.logger();
 
-    let directory = config.pages_dir();
-    let disp = directory.display();
-    let mut new_page = PathBuf::new();
-    new_page.push(directory);
-    new_page.push(title);
-    new_page.set_extension("md");
+    let file = Document::page(config, title);
 
     let config_file = config.config_file();
     if !config_file.exists() {
@@ -21,20 +17,20 @@ pub fn page(config: Config, title: &str) {
         return;
     }
 
-    if !directory.exists() {
-        info!(logger, "'{}' doesn't exist", disp);
+    if !file.dest().exists() {
+        info!(logger, "'{}' doesn't exist", file.dest().display());
 
-        let res = create_dir(directory);
+        let res = create_dir(file.dest());
         if res.is_err() {
-            error!(logger, "couldn't create directory '{}'", disp);
+            error!(logger, "couldn't create directory '{}'", file.dest().display());
             return;
         }
 
-        info!(logger, "created directory '{}'", disp);
+        info!(logger, "created directory '{}'", file.dest().display());
     }
 
-    if !directory.is_dir() {
-        error!(logger, "'{}' isn't a directory", disp);
+    if !file.dest().is_dir() {
+        error!(logger, "'{}' isn't a directory", file.dest().display());
         error!(logger, "cannot continue. Exiting...");
         return;
     }
@@ -54,3 +50,4 @@ pub fn page(config: Config, title: &str) {
 
     info!(logger, "created new page '{}'", new_page.display());
 }
+

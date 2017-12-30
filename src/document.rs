@@ -7,7 +7,7 @@ type Content = String;
 
 /// Represents a single page or post.
 #[derive(Getters)]
-pub struct File {
+pub struct Document {
     /// The title of the page or post, as given by the user.
     #[get = "pub"]
     title: Title,
@@ -33,20 +33,23 @@ pub struct File {
     is_processed: bool,
 }
 
-impl File {
+impl Document {
     /// Creates a new page.
-    fn page(config: Config, title: String) -> Self {
+    pub fn page(config: Config, title: &str) -> Self {
+        let title = title.to_string();
+
         let name = Name::from_title(&title);
 
         let mut src = PathBuf::new();
         src.push(config.pages_dir());
         src.push(name.to_string());
-        src.push(".md");
+        src.set_extension("md");
 
         let mut dest = PathBuf::new();
         dest.push(config.build_dir());
         dest.push(name.to_string());
-        dest.push("/index.html");
+        dest.push("index");
+        dest.set_extension("html");
 
         let mut content = String::new();
         content.push_str("# ");
@@ -55,7 +58,7 @@ impl File {
 
         let is_processed = false;
 
-        File {
+        Document {
             title,
             name,
             src,
@@ -66,7 +69,7 @@ impl File {
     }
 
     /// Creates a new post.
-    fn post(config: Config, title: String) -> Self {
+    pub fn post(config: Config, title: String) -> Self {
         unimplemented!();
     }
 }

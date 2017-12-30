@@ -22,8 +22,10 @@ mod command {
     pub mod post;
     pub mod start;
 }
-mod file;
+mod document;
+mod fail;
 mod name;
+mod safe;
 
 use clap::{Arg, App, SubCommand, AppSettings};
 use command::admin::admin;
