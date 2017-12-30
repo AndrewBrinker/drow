@@ -1,4 +1,3 @@
-use slog::Logger;
 use std::fmt;
 use std::path::Path;
 
@@ -14,9 +13,9 @@ pub enum Fail<'a> {
     CantInitializeGitRepository(&'a Path)
 }
 
-pub fn report_failure<'a>(logger: &Logger, f: Fail<'a>) {
-    error!(logger, "{}", f.to_string());
-    error!(logger, "can't continue. Exiting...");
+pub fn report_failure<'a>(f: Fail<'a>) {
+    println!("{}", f.to_string());
+    println!("can't continue. Exiting...");
 }
 
 impl<'a> fmt::Display for Fail<'a> {

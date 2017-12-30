@@ -4,13 +4,11 @@ use config::Config;
 /// fully-built Drow site, the other to serve an admin panel to manage site
 /// configuration, edit pages, add pages, edit posts, and add posts.
 pub fn admin(config: Config) {
-    let logger = config.logger();
-
-    info!(logger, "checking that we're in a drow repo");
+    println!("checking that we're in a drow repo");
     let config_file = config.config_file();
     if !config_file.exists() {
-        error!(logger, "we are not in a drow repo");
-        error!(logger, "cannot continue. Exiting...");
+        println!("we are not in a drow repo");
+        println!("cannot continue. Exiting...");
         return;
     }
 

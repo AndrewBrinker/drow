@@ -1,7 +1,3 @@
-use slog::Logger;
-use sloggers::Build;
-use sloggers::terminal::{TerminalLoggerBuilder, Destination};
-use sloggers::types::Severity;
 use std::path::Path;
 
 /// A struct containing all CLI configuration.
@@ -34,10 +30,6 @@ pub struct Config<'a> {
     /// The path to the configuration file.
     #[get = "pub"]
     config_file: &'a Path,
-
-    /// The logger for the application.
-    #[get = "pub"]
-    logger: Logger,
 }
 
 impl<'a> Config<'a> {
@@ -49,12 +41,6 @@ impl<'a> Config<'a> {
 
 impl<'a> Default for Config<'a> {
     fn default() -> Self {
-        let logger = TerminalLoggerBuilder::new()
-            .level(Severity::Info)
-            .destination(Destination::Stdout)
-            .build()
-            .unwrap();
-
         Config {
             template_repo: "https://github.com/andrewbrinker/drow-template",
             // This path gets special treatment from GitHub Pages, and can be
@@ -67,8 +53,6 @@ impl<'a> Default for Config<'a> {
             posts_dir: Path::new("./posts/"),
             templates_dir: Path::new("./templates/"),
             config_file: Path::new("Drow.toml"),
-
-            logger: logger,
         }
     }
 }
