@@ -4,24 +4,30 @@ use unidecode::unidecode;
 /// the file.
 pub fn cleanup_name(s: String) -> String {
     let s = unicode_to_ascii_approximation(s);
-    let s = replace_whitespace_with_dashes(s);
     let s = remove_punctuation(s);
+    let s = replace_whitespace_with_dashes(s);
     let s = convert_to_lowercase(s);
     s
 }
 
+/// This is simply a more explanatory alias for the unidecode function from the
+/// unidecode library. It replaces non-ASCII characters with their ASCII
+/// approximation.
 fn unicode_to_ascii_approximation(s: String) -> String {
     unidecode(&s)
 }
 
+/// Removes all characters that aren't alphanumeric or whitespace.
+fn remove_punctuation(s: String) -> String {
+    s.chars().filter(|c| c.is_alphanumeric() || c.is_whitespace()).collect()
+}
+
+/// Replaces all whitespaces with dashes.
 fn replace_whitespace_with_dashes(s: String) -> String {
     s.split_whitespace().collect::<Vec<_>>().join("-")
 }
 
-fn remove_punctuation(s: String) -> String {
-    s.chars().filter(|c| c.is_alphanumeric() || c == &'-').collect()
-}
-
+/// Converts all uppercase letters in the string to lowercase.
 fn convert_to_lowercase(s: String) -> String {
     s.to_lowercase()
 }
