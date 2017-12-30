@@ -1,6 +1,7 @@
 use std::path::PathBuf;
 use config::Config;
 use name::Name;
+use fail::Fail;
 
 type Title = String;
 type Content = String;
@@ -69,7 +70,11 @@ impl Document {
     }
 
     /// Creates a new post.
-    pub fn post(config: Config, title: String) -> Self {
+    pub fn post(config: Config, title: &str) -> Self {
+        unimplemented!();
+    }
+
+    pub fn create(&self) -> Result<(), Fail> {
         unimplemented!();
     }
 }

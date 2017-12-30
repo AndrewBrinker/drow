@@ -22,7 +22,6 @@ mod command {
 mod document;
 mod fail;
 mod name;
-mod safe;
 
 use clap::{Arg, App, SubCommand, AppSettings};
 use command::admin::admin;

@@ -1,4 +1,5 @@
 use std::fs::{create_dir, remove_dir_all};
+use std::path::{Path, PathBuf};
 use git2::Repository;
 use config::Config;
 use fail::{Fail, report_failure};
