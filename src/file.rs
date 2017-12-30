@@ -6,23 +6,30 @@ type Title = String;
 type Content = String;
 
 /// Represents a single page or post.
+#[derive(Getters)]
 pub struct File {
     /// The title of the page or post, as given by the user.
+    #[get = "pub"]
     title: Title,
 
     /// The filename-converted title of the page or post.
+    #[get = "pub"]
     name: Name,
 
     /// The source location of the file.
+    #[get = "pub"]
     src: PathBuf,
 
     /// The destination location of the file.
+    #[get = "pub"]
     dest: PathBuf,
 
     /// The contents of the file.
+    #[get = "pub"]
     content: Content,
 
     /// Indicates whether the file has been processed.
+    #[get = "pub"]
     is_processed: bool,
 }
 
