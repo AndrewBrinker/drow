@@ -3,15 +3,15 @@ use std::fmt;
 
 /// A representation of the name of the post or page.
 #[derive(Debug)]
-struct Name {
+pub struct Name {
     s: String,
 }
 
 impl Name {
     /// Create a new name from a given title by cleaning it up.
-    fn from_title(s: String) -> Self {
+    pub fn from_title(s: &str) -> Self {
         Name {
-            s: cleanup(s)
+            s: cleanup(s.to_string())
         }
     }
 }
@@ -56,29 +56,35 @@ fn convert_to_lowercase(s: String) -> String {
 
 #[cfg(test)]
 mod test {
-    use super::cleanup_name;
+    use super::*;
 
     #[test]
     fn basic_cleanup_name() {
-        let s = "Hello World!".to_string();
         let expected_result = "hello-world".to_string();
-        let actual_result = cleanup_name(s);
+
+        let n = Name::from_title("Hello, World!");
+        let actual_result = n.to_string();
+
         assert_eq!(expected_result, actual_result);
     }
 
     #[test]
     fn more_complex_cleanup_name() {
-        let s = "Setting Expectations for Rust's Difficulty".to_string();
         let expected_result = "setting-expectations-for-rusts-difficulty".to_string();
-        let actual_result = cleanup_name(s);
+
+        let n = Name::from_title("Setting Expectations for Rust's Difficulty");
+        let actual_result = n.to_string();
+
         assert_eq!(expected_result, actual_result);
     }
 
     #[test]
     fn unicode_cleanup_name() {
-        let s = "The Æneid".to_string();
         let expected_result = "the-aeneid".to_string();
-        let actual_result = cleanup_name(s);
+
+        let n = Name::from_title("The Æneid");
+        let actual_result = n.to_string();
+
         assert_eq!(expected_result, actual_result);
     }
 }
