@@ -22,7 +22,7 @@ mod command {
     pub mod post;
     pub mod start;
 }
-mod file;
+mod name;
 
 use clap::{Arg, App, SubCommand, AppSettings};
 use command::admin::admin;

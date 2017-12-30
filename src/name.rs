@@ -1,8 +1,30 @@
 use unidecode::unidecode;
+use std::fmt;
+
+/// A representation of the name of the post or page.
+#[derive(Debug)]
+struct Name {
+    s: String,
+}
+
+impl Name {
+    /// Create a new name from a given title by cleaning it up.
+    fn from_title(s: String) -> Self {
+        Name {
+            s: cleanup(s)
+        }
+    }
+}
+
+impl fmt::Display for Name {
+    fn fmt(&self, f: &mut fmt::Formatter) -> Result<(), fmt::Error> {
+        write!(f, "{}", self.s)
+    }
+}
 
 /// Convert a post or page name into a string which will be used to create
 /// the file.
-pub fn cleanup_name(s: String) -> String {
+fn cleanup(s: String) -> String {
     let s = unicode_to_ascii_approximation(s);
     let s = remove_punctuation(s);
     let s = replace_whitespace_with_dashes(s);
