@@ -5,6 +5,9 @@ use chrono::{Utc, DateTime};
 
 /// Takes in a post title, creates a file called "<timestamp>-<title>.md" in the posts
 /// directory.
+///
+/// Note that this is intended to duplicate the title-to-filename conversion used
+/// by Jekyll.
 pub fn post(config: Config, title: &str) {
     let logger = config.logger();
 
@@ -13,6 +16,7 @@ pub fn post(config: Config, title: &str) {
 
     let utc: DateTime<Utc> = Utc::now();
     let timestamp = utc.format("%Y-%m-%d").to_string();
+    // TODO: Insert Jekyll-style filename conversion.
     let file_name = format!("{}-{}", timestamp, title);
 
     let mut new_post = PathBuf::new();

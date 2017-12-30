@@ -11,7 +11,7 @@ documentation, and a developer who cares. ❤️
 - [Design Goals](#design-goals)
 - [Structure](#structure)
 - [Commands](#commands)
-    - [`drow setup`](#drow-setup-directory)
+    - [`drow start`](#drow-start-directory)
     - [`drow page`](#drow-page-title)
     - [`drow post`](#drow-post-title)
     - [`drow build`](#drow-build)
@@ -63,7 +63,7 @@ everything work exactly as you'd expect!
 
 ## Structure
 
-Every Drow site starts with a `drow setup`. This copies the base Drow project
+Every Drow site starts with a `drow start`. This copies the base Drow project
 template, which looks like this:
 
 ```
@@ -95,7 +95,7 @@ a TOML frontmatter.
 
 ## Commands
 
-### `drow setup [<DIRECTORY>]`
+### `drow start [<DIRECTORY>]`
 
 This creates a new Drow site in the given directory, or in the current
 directory if no directory is given.

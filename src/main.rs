@@ -12,6 +12,7 @@ extern crate getset;
 extern crate toml;
 extern crate git2;
 extern crate chrono;
+extern crate unidecode;
 
 mod config;
 mod command {
@@ -21,6 +22,7 @@ mod command {
     pub mod post;
     pub mod start;
 }
+mod file;
 
 use clap::{Arg, App, SubCommand, AppSettings};
 use command::admin::admin;
