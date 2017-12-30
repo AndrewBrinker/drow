@@ -30,6 +30,7 @@ impl File {
     /// Creates a new page.
     fn page(config: Config, title: String) -> Self {
         let name = Name::from_title(&title);
+
         let mut src = PathBuf::new();
         src.push(config.pages_dir());
         src.push(name.to_string());
@@ -43,6 +44,7 @@ impl File {
         let mut content = String::new();
         content.push_str("# ");
         content.push_str(&title);
+        content.push_str("\n");
 
         let is_processed = false;
 
