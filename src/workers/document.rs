@@ -66,21 +66,21 @@ impl Document {
         let directory = self.dir.clone();
         let new_post = self.file_name.clone();
 
-	    if !directory.exists() {
-	        let res = create_dir(&directory);
+        if !directory.exists() {
+            let res = create_dir(&directory);
 
             if res.is_err() {
                 return Err(Fail::CantCreateDirectory(directory));
             }
-    	}
+        }
 
         if !directory.is_dir() {
             return Err(Fail::PathIsntADirectory(directory));
         }
 
-    	if new_post.exists() {
+        if new_post.exists() {
             return Err(Fail::DocumentAlreadyExists(directory));
-	    }
+        }
 
         let res = File::create(&new_post);
         if res.is_err() {
