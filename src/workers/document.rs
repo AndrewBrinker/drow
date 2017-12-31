@@ -29,10 +29,6 @@ pub struct Document {
     /// The contents of the file.
     #[get = "pub"]
     content: Content,
-
-    /// Indicates whether the file has been processed.
-    #[get = "pub"]
-    is_processed: bool,
 }
 
 impl Document {
@@ -58,15 +54,12 @@ impl Document {
         content.push_str(&title);
         content.push_str("\n");
 
-        let is_processed = false;
-
         Document {
             title,
             name,
             src,
             dest,
             content,
-            is_processed,
         }
     }
 
