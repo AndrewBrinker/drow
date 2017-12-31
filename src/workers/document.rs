@@ -1,4 +1,5 @@
 use unidecode::unidecode;
+use chrono::{Utc, DateTime};
 use std::fmt;
 use std::path::PathBuf;
 use config::Config;
@@ -10,23 +11,15 @@ type Content = String;
 /// Represents a single page or post.
 #[derive(Getters)]
 pub struct Document {
-    /// The title of the page or post, as given by the user.
+    /// The filename of the document.
     #[get = "pub"]
-    title: Title,
+    name: String,
 
-    /// The filename-converted title of the page or post.
+    /// The location of the document.
     #[get = "pub"]
-    name: Name,
+    location: PathBuf,
 
-    /// The source location of the file.
-    #[get = "pub"]
-    src: PathBuf,
-
-    /// The destination location of the file.
-    #[get = "pub"]
-    dest: PathBuf,
-
-    /// The contents of the file.
+    /// The contents of the document.
     #[get = "pub"]
     content: Content,
 }
@@ -34,20 +27,12 @@ pub struct Document {
 impl Document {
     /// Creates a new page.
     pub fn page(config: Config, title: &str) -> Self {
-        let title = title.to_string();
+        let name = Name::from_title(&title).to_string();
 
-        let name = Name::from_title(&title);
-
-        let mut src = PathBuf::new();
-        src.push(config.pages_dir());
-        src.push(name.to_string());
-        src.set_extension("md");
-
-        let mut dest = PathBuf::new();
-        dest.push(config.build_dir());
-        dest.push(name.to_string());
-        dest.push("index");
-        dest.set_extension("html");
+        let mut location = PathBuf::new();
+        location.push(config.pages_dir());
+        location.push(name.to_string());
+        location.set_extension("md");
 
         let mut content = String::new();
         content.push_str("# ");
@@ -55,17 +40,34 @@ impl Document {
         content.push_str("\n");
 
         Document {
-            title,
             name,
-            src,
-            dest,
+            location,
             content,
         }
     }
 
     /// Creates a new post.
-    pub fn post(_config: Config, _title: &str) -> Self {
-        unimplemented!();
+    pub fn post(config: Config, title: &str) -> Self {
+        let utc: DateTime<Utc> = Utc::now();
+        let timestamp = utc.format("%Y-%m-%d").to_string();
+        let name_fragment = Name::from_title(&title);
+        let name = format!("{}-{}", timestamp, name_fragment);
+
+        let mut location = PathBuf::new();
+        location.push(config.posts_dir());
+        location.push(name.to_string());
+        location.set_extension("md");
+
+        let mut content = String::new();
+        content.push_str("# ");
+        content.push_str(&title);
+        content.push_str("\n");
+
+        Document {
+            name,
+            location,
+            content,
+        }
     }
 
     pub fn create(&self) -> Result<(), Fail> {
