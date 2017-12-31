@@ -13,11 +13,6 @@ pub enum Fail<'a> {
     CantInitializeGitRepository(&'a Path)
 }
 
-pub fn report_failure<'a>(f: Fail<'a>) {
-    println!("{}", f.to_string());
-    println!("can't continue. Exiting...");
-}
-
 impl<'a> fmt::Display for Fail<'a> {
     fn fmt(&self, f: &mut fmt::Formatter) -> Result<(), fmt::Error> {
         use fail::Fail::*;
