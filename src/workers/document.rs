@@ -69,7 +69,7 @@ impl Document {
 	    if !directory.exists() {
 	        let res = create_dir(&directory);
 
-	        if res.is_err() {
+            if res.is_err() {
                 return Err(Fail::CantCreateDirectory(directory));
             }
     	}
