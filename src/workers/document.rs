@@ -4,8 +4,11 @@ use std::path::PathBuf;
 use config::Config;
 use fail::Fail;
 
-type Title = String;
-type Content = String;
+#[derive(Debug)]
+pub enum DocumentType {
+    Post,
+    Page,
+}
 
 /// Represents a single page or post.
 #[derive(Getters)]
@@ -20,41 +23,40 @@ pub struct Document {
 
     /// The contents of the document.
     #[get = "pub"]
-    content: Content,
+    content: String,
+
+    /// The directory in which the document is placed.
+    #[get = "pub"]
+    dir: PathBuf,
 }
 
 impl Document {
-    /// Creates a new page.
-    pub fn page(config: Config, title: &str) -> Self {
-        let name = cleanup(title.to_string());
-
-        let mut location = PathBuf::new();
-        location.push(config.pages_dir());
-        location.push(name.clone());
-        location.set_extension("md");
-
-        let mut content = String::new();
-        content.push_str("# ");
-        content.push_str(&title);
-        content.push_str("\n");
-
-        Document {
-            name,
-            location,
-            content,
-        }
+    pub fn new<S: AsRef<str>>(document_type: DocumentType, config: Config, title: S) -> Self {
+        Document::_new(document_type, config, title.as_ref())
     }
 
-    /// Creates a new post.
-    pub fn post(config: Config, title: &str) -> Self {
-        let utc: DateTime<Utc> = Utc::now();
-        let timestamp = utc.format("%Y-%m-%d").to_string();
-        let name_fragment = cleanup(title.to_string());
-        let name = format!("{}-{}", timestamp, name_fragment);
+    fn _new(document_type: DocumentType, config: Config, title: &str) -> Self {
+        let (name, dir) = match document_type {
+            DocumentType::Post => {
+                let utc: DateTime<Utc> = Utc::now();
+                let timestamp = utc.format("%Y-%m-%d").to_string();
+                let name_fragment = cleanup(title.to_string());
+
+                let name = format!("{}-{}", timestamp, name_fragment);
+                let dir = config.posts_dir().to_owned().to_owned();
+
+                (name, dir)
+            }
+            DocumentType::Page => {
+                let name = cleanup(title);
+                let dir = config.pages_dir().to_owned().to_owned();
+                (name, dir)
+            }
+        };
 
         let mut location = PathBuf::new();
-        location.push(config.posts_dir());
-        location.push(name.clone());
+        location.push(&dir);
+        location.push(&name);
         location.set_extension("md");
 
         let mut content = String::new();
@@ -66,6 +68,7 @@ impl Document {
             name,
             location,
             content,
+            dir,
         }
     }
 
@@ -76,7 +79,11 @@ impl Document {
 
 /// Convert a post or page name into a string which will be used to create
 /// the file.
-fn cleanup(s: String) -> String {
+fn cleanup<S: ToString>(s: S) -> String {
+    _cleanup(s.to_string())
+}
+
+fn _cleanup(s: String) -> String {
     unidecode(&s)
         .chars()
         .filter(|c| c.is_alphanumeric() || c.is_whitespace())
