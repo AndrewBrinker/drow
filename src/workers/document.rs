@@ -1,6 +1,5 @@
 use unidecode::unidecode;
 use chrono::{Utc, DateTime};
-use std::fmt;
 use std::path::PathBuf;
 use config::Config;
 use fail::Fail;
@@ -27,11 +26,11 @@ pub struct Document {
 impl Document {
     /// Creates a new page.
     pub fn page(config: Config, title: &str) -> Self {
-        let name = Name::from_title(&title).to_string();
+        let name = cleanup(title.to_string());
 
         let mut location = PathBuf::new();
         location.push(config.pages_dir());
-        location.push(name.to_string());
+        location.push(name.clone());
         location.set_extension("md");
 
         let mut content = String::new();
@@ -50,12 +49,12 @@ impl Document {
     pub fn post(config: Config, title: &str) -> Self {
         let utc: DateTime<Utc> = Utc::now();
         let timestamp = utc.format("%Y-%m-%d").to_string();
-        let name_fragment = Name::from_title(&title);
+        let name_fragment = cleanup(title.to_string());
         let name = format!("{}-{}", timestamp, name_fragment);
 
         let mut location = PathBuf::new();
         location.push(config.posts_dir());
-        location.push(name.to_string());
+        location.push(name.clone());
         location.set_extension("md");
 
         let mut content = String::new();
@@ -72,27 +71,6 @@ impl Document {
 
     pub fn create(&self) -> Result<(), Fail> {
         unimplemented!();
-    }
-}
-
-/// A representation of the name of the post or page.
-#[derive(Debug)]
-pub struct Name {
-    s: String,
-}
-
-impl Name {
-    /// Create a new name from a given title by cleaning it up.
-    pub fn from_title(s: &str) -> Self {
-        Name {
-            s: cleanup(s.to_string())
-        }
-    }
-}
-
-impl fmt::Display for Name {
-    fn fmt(&self, f: &mut fmt::Formatter) -> Result<(), fmt::Error> {
-        write!(f, "{}", self.s)
     }
 }
 
@@ -116,9 +94,7 @@ mod test {
     #[test]
     fn basic_cleanup_name() {
         let expected_result = "hello-world".to_string();
-
-        let n = Name::from_title("Hello, World!");
-        let actual_result = n.to_string();
+        let actual_result = cleanup("Hello, World!");
 
         assert_eq!(expected_result, actual_result);
     }
@@ -126,9 +102,7 @@ mod test {
     #[test]
     fn more_complex_cleanup_name() {
         let expected_result = "setting-expectations-for-rusts-difficulty".to_string();
-
-        let n = Name::from_title("Setting Expectations for Rust's Difficulty");
-        let actual_result = n.to_string();
+        let actual_result = cleanup("Setting Expectations for Rust's Difficulty");
 
         assert_eq!(expected_result, actual_result);
     }
@@ -136,9 +110,7 @@ mod test {
     #[test]
     fn unicode_cleanup_name() {
         let expected_result = "the-aeneid".to_string();
-
-        let n = Name::from_title("The Æneid");
-        let actual_result = n.to_string();
+        let actual_result = cleanup("The Æneid");
 
         assert_eq!(expected_result, actual_result);
     }
