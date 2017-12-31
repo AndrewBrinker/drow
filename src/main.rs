@@ -11,6 +11,7 @@ extern crate git2;
 extern crate chrono;
 extern crate unidecode;
 
+mod builder;
 mod config;
 mod command {
     pub mod admin;
@@ -21,6 +22,7 @@ mod command {
 }
 mod document;
 mod fail;
+mod repo;
 
 use clap::{Arg, App, SubCommand, AppSettings};
 use command::admin::admin;

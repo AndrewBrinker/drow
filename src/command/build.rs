@@ -1,15 +1,13 @@
 use config::Config;
+use builder::Builder;
 
 /// Builds the site, putting the results into the build directory.
 pub fn build(config: Config) {
-    println!("checking that we're in a drow repo");
-    let config_file = config.config_file();
-    if !config_file.exists() {
-        println!("we are not in a drow repo");
-        println!("cannot continue. Exiting...");
-        return;
-    }
+    let builder = Builder::new();
 
-    // TODO: implement the rest of it
-    unimplemented!();
+    if let Err(e) = builder.build(config) {
+        println!("error: {}", e.to_string());
+    } else {
+        println!("build successful!");
+    }
 }
