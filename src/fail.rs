@@ -10,7 +10,9 @@ pub enum Fail {
     DirectoryIsntEmpty(PathBuf),
     CantCloneTemplateRepo(PathBuf),
     CantDeleteGitDirectory(PathBuf),
-    CantInitializeGitRepository(PathBuf)
+    CantInitializeGitRepository(PathBuf),
+    DocumentAlreadyExists(PathBuf),
+    CantCreateDocument(PathBuf),
 }
 
 impl fmt::Display for Fail {
@@ -41,6 +43,12 @@ impl fmt::Display for Fail {
             }
             CantInitializeGitRepository(ref p) => {
                 write!(f, "can't initialize git repository in '{}'", p.display())
+            }
+            DocumentAlreadyExists(ref p) => {
+                write!(f, "'{}' already exists", p.display())
+            }
+            CantCreateDocument(ref p) => {
+                write!(f, "can't create document '{}'", p.display())
             }
         }
     }

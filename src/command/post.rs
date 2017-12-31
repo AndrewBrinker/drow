@@ -12,7 +12,7 @@ pub fn post(config: Config, title: &str) {
     if let Err(e) = document.create() {
         println!("error: {}", e.to_string());
     } else {
-        println!("created '{}'", document.location().display());
+        println!("created '{}'", document.file_name().display());
     }
 }
 

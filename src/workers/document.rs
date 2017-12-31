@@ -1,6 +1,7 @@
 use unidecode::unidecode;
 use chrono::{Utc, DateTime};
 use std::path::PathBuf;
+use std::fs::{create_dir, File};
 use config::Config;
 use fail::Fail;
 
@@ -13,17 +14,9 @@ pub enum DocumentType {
 /// Represents a single page or post.
 #[derive(Getters)]
 pub struct Document {
-    /// The filename of the document.
+    /// The file_name of the document.
     #[get = "pub"]
-    name: String,
-
-    /// The location of the document.
-    #[get = "pub"]
-    location: PathBuf,
-
-    /// The contents of the document.
-    #[get = "pub"]
-    content: String,
+    file_name: PathBuf,
 
     /// The directory in which the document is placed.
     #[get = "pub"]
@@ -40,11 +33,10 @@ impl Document {
             DocumentType::Post => {
                 let utc: DateTime<Utc> = Utc::now();
                 let timestamp = utc.format("%Y-%m-%d").to_string();
-                let name_fragment = cleanup(title.to_string());
+                let name_fragment = cleanup(title);
 
                 let name = format!("{}-{}", timestamp, name_fragment);
                 let dir = config.posts_dir().to_owned().to_owned();
-
                 (name, dir)
             }
             DocumentType::Page => {
@@ -54,10 +46,10 @@ impl Document {
             }
         };
 
-        let mut location = PathBuf::new();
-        location.push(&dir);
-        location.push(&name);
-        location.set_extension("md");
+        let mut file_name = PathBuf::new();
+        file_name.push(&dir);
+        file_name.push(&name);
+        file_name.set_extension("md");
 
         let mut content = String::new();
         content.push_str("# ");
@@ -65,15 +57,37 @@ impl Document {
         content.push_str("\n");
 
         Document {
-            name,
-            location,
-            content,
+            file_name,
             dir,
         }
     }
 
     pub fn create(&self) -> Result<(), Fail> {
-        unimplemented!();
+        let directory = self.dir.clone();
+        let new_post = self.file_name.clone();
+
+	    if !directory.exists() {
+	        let res = create_dir(&directory);
+
+	        if res.is_err() {
+				return Err(Fail::CantCreateDirectory(directory));
+        	}
+    	}
+
+    	if !directory.is_dir() {
+			return Err(Fail::PathIsntADirectory(directory));
+	    }
+
+    	if new_post.exists() {
+			return Err(Fail::DocumentAlreadyExists(directory));
+	    }
+
+    	let res = File::create(&new_post);
+	    if res.is_err() {
+			return Err(Fail::CantCreateDocument(directory));
+    	}
+
+		Ok(())
     }
 }
 
