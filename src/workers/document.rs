@@ -70,24 +70,24 @@ impl Document {
 	        let res = create_dir(&directory);
 
 	        if res.is_err() {
-				return Err(Fail::CantCreateDirectory(directory));
-        	}
+                return Err(Fail::CantCreateDirectory(directory));
+            }
     	}
 
-    	if !directory.is_dir() {
-			return Err(Fail::PathIsntADirectory(directory));
-	    }
+        if !directory.is_dir() {
+            return Err(Fail::PathIsntADirectory(directory));
+        }
 
     	if new_post.exists() {
-			return Err(Fail::DocumentAlreadyExists(directory));
+            return Err(Fail::DocumentAlreadyExists(directory));
 	    }
 
-    	let res = File::create(&new_post);
-	    if res.is_err() {
-			return Err(Fail::CantCreateDocument(directory));
-    	}
+        let res = File::create(&new_post);
+        if res.is_err() {
+            return Err(Fail::CantCreateDocument(directory));
+        }
 
-		Ok(())
+        Ok(())
     }
 }
 
