@@ -11,7 +11,7 @@ pub struct Repo {
 }
 
 impl Repo {
-    pub fn new(config: Config, location: &str) -> Repo {
+    pub fn new(_config: Config, location: &str) -> Repo {
         let location = PathBuf::from(location);
 
         Repo { location }

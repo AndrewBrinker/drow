@@ -71,7 +71,7 @@ impl Document {
     }
 
     /// Creates a new post.
-    pub fn post(config: Config, title: &str) -> Self {
+    pub fn post(_config: Config, _title: &str) -> Self {
         unimplemented!();
     }
 

@@ -8,7 +8,7 @@ impl Builder {
         Builder {}
     }
 
-    pub fn build(&self, config: Config) -> Result<(), Fail> {
+    pub fn build(&self, _config: Config) -> Result<(), Fail> {
         unimplemented!();
     }
 }
