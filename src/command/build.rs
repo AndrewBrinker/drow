@@ -1,5 +1,5 @@
 use config::Config;
-use builder::Builder;
+use workers::builder::Builder;
 
 /// Builds the site, putting the results into the build directory.
 pub fn build(config: Config) {

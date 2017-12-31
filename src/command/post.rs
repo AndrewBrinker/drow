@@ -1,5 +1,5 @@
 use config::Config;
-use document::Document;
+use workers::document::Document;
 
 /// Takes in a post title, creates a file called "<timestamp>-<title>.md" in the posts
 /// directory.

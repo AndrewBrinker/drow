@@ -1,5 +1,5 @@
 use config::Config;
-use repo::Repo;
+use workers::repo::Repo;
 
 /// Setup a fresh Drow repository.
 ///

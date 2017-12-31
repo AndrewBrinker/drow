@@ -1,5 +1,5 @@
 use config::Config;
-use document::Document;
+use workers::document::Document;
 
 /// Takes in a page title, creates a file called "<title>.md" in the pages
 /// directory.
