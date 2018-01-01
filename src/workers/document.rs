@@ -79,12 +79,12 @@ impl Document {
         }
 
         if new_post.exists() {
-            return Err(Fail::DocumentAlreadyExists(directory));
+            return Err(Fail::DocumentAlreadyExists(new_post));
         }
 
         let res = File::create(&new_post);
         if res.is_err() {
-            return Err(Fail::CantCreateDocument(directory));
+            return Err(Fail::CantCreateDocument(new_post));
         }
 
         Ok(())
