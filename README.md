@@ -3,8 +3,16 @@
 __NOTE: DROW IS CURRENTLY IN AN ALPHA STATE, AND SHOULD NOT BE TRUSTED.__
 
 Drow is a work-in-progress static site generator designed for extreme ease of
-use. It has few features. It is not configurable. It has an excellent CLI and
-documentation, and a developer who cares. ❤️
+use. Selling points include:
+
+- It has few features.
+- It is not configurable.
+- It has an excellent command-line interface.
+- It is well documentated.
+- It is easy to fork and modify.
+
+If these don't sound appealing to you, there are many other
+[static site generators](https://www.staticgen.com/) to try.
 
 ## Table of Contents
 
@@ -19,48 +27,6 @@ documentation, and a developer who cares. ❤️
 - [Contributing](#contributing)
 - [License](#license)
 
-## Design Goals
-
-__1. Provide as simple a mapping from source to site as possible.__
-
-It should be easy to predict what your final site will look like just by
-looking at the source of your repository.
-
-__2. Be easy to fork and modify for your own purposes.__
-
-Drow is minimal, and that means that it may not do exactly the things you
-want it to do. In that case, it should be easy to fork the Drow repo,
-modify it to do what you want, and install it.
-
-__3. Include only the core features people actually use.__
-
-Some static site generators are packed with features. This can be really
-great, but if you're like me you know what you want your site to do, and
-don't like dealing with the complexity added by additional features. Drow
-isn't packed with features, but that helps make it extremely easy to use!
-
-__4. Include only the bare minimum configuration options.__
-
-By the same token, more configurability means more chances to be confused
-or for something to go wrong. Drow is not configurable, which means it's not
-hard to predict how things will behave!
-
-__5. Be easy to deploy.__
-
-Who wants to worry about deploying? Drow is designed to work solely with
-GitHub Pages, and in fact _only_ supports the project pages set up, with
-the site deployed from the `docs/` folder. This means that Drow actually
-doesn't even have a command to handle deploys! Just `drow build` your site,
-then `git push` to deploy!
-
-__6. Be fun to write posts in.__
-
-I wrote Drow to manage my own blog, and I wanted something that would be
-fun to write in. That's why `drow admin` exists. Writing posts in the
-command line is annoying, and there's no reason to have to do it! Instead,
-with Drow, you can write them in a nifty local admin panel and have
-everything work exactly as you'd expect!
-
 ## Structure
 
 Every Drow site starts with a `drow start`. This copies the base Drow project
@@ -74,7 +40,7 @@ template, which looks like this:
 |- templates/
 ```
 
-`Drow.toml` is where you put any configuration you want your pages, posts, or
+`Drow.toml` is where you put any variables you want your pages, posts, or
 templates to be able to use.
 
 `assets/` just has its contents copied into the root of the site during
