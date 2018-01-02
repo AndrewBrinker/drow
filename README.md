@@ -1,7 +1,5 @@
 # Drow
 
-__NOTE: DROW IS CURRENTLY IN AN ALPHA STATE, AND SHOULD NOT BE TRUSTED.__
-
 Drow is a work-in-progress static site generator designed for extreme ease of
 use. Selling points include:
 
@@ -11,13 +9,9 @@ use. Selling points include:
 - It is well documentated.
 - It is easy to fork and modify.
 
-## Contributing
+__Contributing__: To learn how to contribute, see [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
-To learn how to contribute, see [`CONTRIBUTING.md`](CONTRIBUTING.md).
-
-## License
-
-Drow is MIT licensed. You can see the full license text in [`LICENSE.md`](LICENSE.md).
+__License__: Drow is MIT licensed. You can see the full license text in [`LICENSE.md`](LICENSE.md).
 
 ## Purpose
 
