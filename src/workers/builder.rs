@@ -20,19 +20,20 @@ impl Builder {
         // 3. posts/ - These get transformed (2017-01-20-title.md -> blog/2017/01/20/title/index.html)
         //
         // Pages and Posts may use Templates.
-    }
 
-    fn build_assets(config: Config) -> Result<(), Fail> {
-        unimplemented!();
-    }
-
-    fn build_pages(config: Config) -> Result<(), Fail> {
-        unimplemented!();
-    }
-
-    fn build_posts(config: Config) -> Result<(), Fail> {
-        unimplemented!();
+        Ok(())
     }
 }
 
+fn build_assets(config: &Config) -> Result<(), Fail> {
+    unimplemented!();
+}
+
+fn build_pages(config: &Config) -> Result<(), Fail> {
+    unimplemented!();
+}
+
+fn build_posts(config: &Config) -> Result<(), Fail> {
+    unimplemented!();
+}
 
