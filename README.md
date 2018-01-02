@@ -11,9 +11,6 @@ use. Selling points include:
 - It is well documentated.
 - It is easy to fork and modify.
 
-If these don't sound appealing to you, there are many other
-[static site generators](https://www.staticgen.com/) to try.
-
 ## Contributing
 
 To learn how to contribute, see [`CONTRIBUTING.md`](CONTRIBUTING.md).
@@ -21,4 +18,11 @@ To learn how to contribute, see [`CONTRIBUTING.md`](CONTRIBUTING.md).
 ## License
 
 Drow is MIT licensed. You can see the full license text in [`LICENSE.md`](LICENSE.md).
+
+## Purpose
+
+Drow is a simple static site generator. It has few features and is not configurable.
+These are strengths. The purpose of Drow is to be a static site generator for people
+who need little, and are interested in customizing and building on a simple foundation.
+Please, fork it and modify it. Make it what you want.
 

@@ -14,7 +14,6 @@ extern crate unidecode;
 mod config;
 mod fail;
 mod command {
-    pub mod admin;
     pub mod build;
     pub mod page;
     pub mod post;
@@ -27,7 +26,6 @@ mod workers {
 }
 
 use clap::{Arg, App, SubCommand, AppSettings};
-use command::admin::admin;
 use command::build::build;
 use command::page::page;
 use command::post::post;
@@ -51,10 +49,6 @@ fn main() {
         .about("Sets up a new drow site")
         .help(r#""#);
 
-    let admin_cmd = SubCommand::with_name("admin")
-        .about("Starts a local admin site")
-        .help(r#""#);
-
     let build_cmd = SubCommand::with_name("build")
         .about("Builds the site once")
         .help(r#""#);
@@ -71,6 +65,7 @@ fn main() {
     example:
         drow page "welcome"
         ⇒ pages/welcome.md         # file created
+        drow build
         ⇒ docs/welcome/index.html  # file built"#,
         );
 
@@ -99,20 +94,17 @@ fn main() {
         .subcommand(post_cmd)
         .subcommand(page_cmd)
         .subcommand(build_cmd)
-        .subcommand(admin_cmd)
         .setting(AppSettings::SubcommandRequiredElseHelp)
         .setting(AppSettings::InferSubcommands)
         .setting(AppSettings::VersionlessSubcommands)
         .help(
-            r#"drow is an opinionated static site generator
+            r#"drow is a no-configuration static site generator
 
     use:
         drow start [<location>] → create a new site
-        drow build              → build your site
-        drow admin              → manage your site with a nifty admin panel
         drow post <title>       → start a new post on your site
         drow page <title>       → create a new page for your site
-        drow deploy             → deploy your site with "git push"
+        drow build              → build your site
 
     help:
         drow version            → show what version you're using
@@ -124,7 +116,6 @@ fn main() {
         ("post", Some(m)) => post(config, m.value_of("TITLE").unwrap()),
         ("page", Some(m)) => page(config, m.value_of("TITLE").unwrap()),
         ("build", Some(..)) => build(config),
-        ("admin", Some(..)) => admin(config),
         _ => {}
     }
 }
