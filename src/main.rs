@@ -10,15 +10,17 @@ extern crate toml;
 extern crate git2;
 extern crate chrono;
 extern crate unidecode;
+extern crate failure;
+#[macro_use] extern crate failure_derive;
 
 mod config;
-mod fail;
 mod command {
     pub mod build;
     pub mod page;
     pub mod post;
     pub mod start;
 }
+mod error;
 mod workers {
     pub mod builder;
     pub mod document;

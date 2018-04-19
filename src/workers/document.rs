@@ -3,7 +3,7 @@ use chrono::{Utc, DateTime};
 use std::path::PathBuf;
 use std::fs::{create_dir, File};
 use config::Config;
-use fail::Fail;
+use error::DrowError;
 
 #[derive(Debug)]
 pub enum DocumentType {

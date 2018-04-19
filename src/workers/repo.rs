@@ -2,7 +2,7 @@ use std::path::PathBuf;
 use std::fs::{create_dir, remove_dir_all};
 use git2::Repository;
 use config::Config;
-use fail::Fail;
+use error::DrowError;
 
 /// Represents a single page or post.
 #[derive(Getters)]

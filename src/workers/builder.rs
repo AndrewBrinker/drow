@@ -1,5 +1,5 @@
 use config::Config;
-use fail::Fail;
+use error::DrowError;
 
 pub struct Builder {}
 
